@@ -2,6 +2,8 @@
 
 * http://github.com/netarc/c-arel
 
+C-Arel is still in progress but is in a mostly functional state. Currently does not yet support (dot, oracle, depth_first, informix where the ruby Arel does)
+
 ## DESCRIPTION
 
 C-Arel is a SQL AST manager that is a C++ port of [Arel](http://github.com/rails/arel)
