@@ -11,7 +11,6 @@
 namespace c_arel {
   namespace nodes {
     TableAlias::TableAlias(variant left, variant right) : Binary(left, right) {
-      printf("TableAlias::TableAlias: %s | %s\n", this->left.type().name(), this->right.type().name());
     }
     
     Attribute TableAlias::operator[] (const char *name) {

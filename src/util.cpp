@@ -22,7 +22,8 @@ namespace c_arel {
   std::string join_vector(std::vector<std::string> v, const char *delimiter) {
     std::string result;
     for(size_t i=0,l=v.size(); i<l; i++) {
-      if (i > 0) result += delimiter;
+      if (v[i] == "") continue;
+      if (result.size() > 0) result += delimiter;
       result += v[i];
     }
     return result;

@@ -47,13 +47,9 @@ namespace c_arel {
     virtual std::string visit_Arel_Nodes_Having(variant & o);
     virtual std::string visit_Arel_Nodes_Offset(variant & o);
     virtual std::string visit_Arel_Nodes_Limit(variant & o);
+    virtual std::string visit_Arel_Nodes_Top(variant & o);
 
     /*
-     # FIXME: this does nothing on most databases, but does on MSSQL
-     def visit_Arel_Nodes_Top o
-     ""
-     end
-     
      def visit_Arel_Nodes_Lock o
      visit o.expr
      end

@@ -139,7 +139,6 @@ namespace c_arel {
     
     if (ClassMap::is_recognized_classname(object.type().name())) {
       classname = base->classname();
-      printf ("visit node: %s\n", classname.c_str());
     } else {
       if (object.type() == typeid(char *) ||
           object.type() == typeid(const char *))

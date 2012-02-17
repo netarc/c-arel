@@ -13,7 +13,6 @@ namespace c_arel {
   method_dict_map_t ToSql::_to_sql_method_lookup;
   method_dict_map_t & ToSql::method_dictionary(void) {
     if (_to_sql_method_lookup.empty()) {
-      printf("ToSql::method_dictionary\n");
       method_dict_map_t parent_method_dictionary = Visitor::method_dictionary();
       _to_sql_method_lookup = method_dict_map_t(parent_method_dictionary.begin(), parent_method_dictionary.end());
       // overrides
@@ -34,6 +33,7 @@ namespace c_arel {
       _to_sql_method_lookup["Arel::Nodes::Having"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Having;
       _to_sql_method_lookup["Arel::Nodes::Offset"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Offset;
       _to_sql_method_lookup["Arel::Nodes::Limit"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Limit;
+      _to_sql_method_lookup["Arel::Nodes::Top"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Top;
       _to_sql_method_lookup["Arel::Nodes::Ascending"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Ascending;
       _to_sql_method_lookup["Arel::Nodes::Descending"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Descending;
       _to_sql_method_lookup["Arel::Nodes::Grouping"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Grouping;
@@ -297,7 +297,11 @@ namespace c_arel {
     nodes::Limit *node = (nodes::Limit *)*o;
     return format_string("LIMIT %s", visit(node->expr).c_str());
   }
-  
+
+  std::string ToSql::visit_Arel_Nodes_Top(variant & o) {
+    return "";
+  }
+
   std::string ToSql::visit_Arel_Nodes_Ascending(variant & o) {
     nodes::Ascending *node = (nodes::Ascending *)*o;
     return format_string("%s ASC", visit(node->expr).c_str());
