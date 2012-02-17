@@ -1,0 +1,9 @@
+libdir=@CMAKE_INSTALL_PREFIX@/@INSTALL_LIB@
+includedir=@CMAKE_INSTALL_PREFIX@/@INSTALL_INC@
+
+Name: c-arel
+Description: The c-arel library
+Version: @C_AREL_VERSION_STRING@
+Requires: 
+Libs: -L${libdir} -lz 
+Cflags: -I${includedir}
