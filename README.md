@@ -62,9 +62,9 @@ What are called `LIMIT` and `OFFSET` in SQL are called `take` and `skip` in Arel
 
 The best property of the Relational Algebra is its "composability", or closure under all operations. For example, to restrict AND project, just "chain" the method invocations:
 
-    users                                 \
-      .where(users["name"].equal("amy"))  \
-      .project(users["id"])               \
+    users
+      .where(users["name"].equal("amy"))
+      .project(users["id"])
     # => SELECT users.id FROM users WHERE users.name = 'amy'
 
 All operators are chainable in this way, and they are chainable any number of times, in any order.
