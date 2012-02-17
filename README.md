@@ -12,6 +12,6 @@ The C-Arel library is built using CMake 2.6+ (<http://www.cmake.org>) on all pla
 
 On most systems you can build the library using the following commands
 
-  $ mkdir build && cd build
-  $ cmake .. -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-  $ cmake --build .
+	$ mkdir build && cd build
+	$ cmake .. -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+	$ cmake --build .
