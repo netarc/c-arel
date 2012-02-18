@@ -65,4 +65,8 @@ namespace c_arel {
     }
     return sNew;
   }
+
+  nodes::SqlLiteral raw_sql(const char *sql) {
+    return nodes::SqlLiteral(sql); 
+  }
 }

@@ -20,7 +20,7 @@ On most systems you can build the library using the following commands
 
 ## A Gentle Introduction
 
-Generating a query with ARel is simple. For example, in order to produce
+Generating a query with Arel is simple. For example, in order to produce
 
     SELECT * FROM users
 

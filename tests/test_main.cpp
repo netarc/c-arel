@@ -29,9 +29,11 @@
 #include "test_helpers.h"
 
 DECLARE_SUITE(table);
+DECLARE_SUITE(select_manager);
 
 static test_suite suite_methods[]= {
   SUITE_NAME(table),
+  SUITE_NAME(select_manager)
 };
 #define GIT_SUITE_COUNT (ARRAY_SIZE(suite_methods))
 
@@ -45,9 +47,5 @@ main(int __UNUSED(argc), const char ** __UNUSED(argv[])) {
   __UNUSED_ARG(argc);
   __UNUSED_ARG(argv);
 
-  unsigned int failures = 0;
-  for (unsigned int i=0; i<GIT_SUITE_COUNT; ++i)
-    failures += testsuite_run(suite_methods[i]());
-
-  return failures ? -1 : 0;
+  return run_test_suite(suite_methods, ARRAY_SIZE(suite_methods));
 }

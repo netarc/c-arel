@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <setjmp.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,6 +6,176 @@
 
 #include "test_lib.h"
 
+static char TMP_BUFFER[2048];
+
+unsigned int assertions = 0;
+std::vector<_test_case *> __tests;
+std::vector<_test_case *> __failed_tests;
+
+_test_case *current_test_case(void) {
+  return __tests.back();  
+}
+
+void free_test_case(_test_case *tc) {
+  if (tc) {
+    free(tc->name);
+    if (tc->message)
+      free(tc->message);
+    if (tc->failed_pos)
+      free(tc->failed_pos);
+    free(tc);
+  }
+}
+
+static char DESCRIP_BUFFER[2048];
+const char * describe_stack(std::vector<const char *> &stack) {
+  strcpy(DESCRIP_BUFFER, "");
+  for (int i=0, iLen=stack.size(); i<iLen; ++i) {
+    if (i > 0)
+      strcat(DESCRIP_BUFFER, " ");
+    strcat(DESCRIP_BUFFER, stack.at(i));
+  }
+// .back()->description
+  return DESCRIP_BUFFER;
+}
+
+
+_test_case * __run_test(const char *description, std::vector<const char *> &stack) {
+  _test_case *tc = (_test_case *)malloc(sizeof(_test_case));
+  memset(tc, 0, sizeof(_test_case));
+
+  char buf[1024];
+  sprintf(buf, "\"%s %s\"", describe_stack(stack), description);
+  tc->name = strdup(buf);
+
+  __tests.push_back(tc);
+  return tc;
+}
+
+void __end_test() {
+  printf("%c", __tests.back()->failed ? 'F' : '.');
+}
+
+int run_test_suite(test_suite *suite_methods, int suite_count) {
+  for (unsigned int i=0; i<suite_count; ++i)
+    suite_methods[i]();
+
+  printf("\n");
+  for (std::vector<_test_case *>::iterator it=__failed_tests.begin(); it!=__failed_tests.end(); ++it) {
+    printf("\n%s\n%s\n%s\n", (*it)->name, (*it)->message, (*it)->failed_pos);
+  }
+
+  printf("\n%u tests, %u assertions, %u failures\n", (unsigned int)__tests.size(), assertions, (unsigned int)__failed_tests.size());
+
+  while (!__tests.empty()) {
+    free_test_case(__tests.back());
+    __tests.pop_back();
+  }
+
+  return __failed_tests.size() > 0 ? -1 : 0;
+}
+
+static void fail_test(const char *file, int line, const char *message) {
+  _test_case *tc = current_test_case();
+  char buf[1024];
+  const char *last_error = NULL;
+
+  snprintf(buf, 1024, "%s:%d", file, line);
+
+  tc->failed = 1;
+  tc->message = strdup(message);
+  tc->failed_pos = strdup(buf);
+
+  __failed_tests.push_back(tc);
+
+  longjmp(tc->jump, 0);
+}
+
+void __test_assert_true(const char *file, int line, bool value, const char *message) {
+  ++assertions;
+  if (!value) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: TRUE");
+    }
+    fail_test(file, line, message);
+  }
+}
+
+void __test_assert_equal(const char *file, int line, int expected, int value, const char *message) {
+  ++assertions;
+  if (expected != value) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: %i but was %i", expected, value);
+    }
+    fail_test(file, line, message);
+  }
+}
+
+void __test_assert_equal(const char *file, int line, const char *expected, const char *value, const char *message) {
+  ++assertions;
+  if (strcmp(expected, value) != 0) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: '%s' but was '%s'", expected, value);
+    }
+    fail_test(file, line, message);
+  }
+}
+
+
+
+/*
+void __run_test_suite() {
+  printf("\n");
+  std::vector<const char *> context_stack;
+  _test_case *current_test_case;
+
+  // describe("backwards compat")
+  context_stack.push_back("backwards compat");
+
+  // describe("join")
+  context_stack.push_back("join");
+
+  // it("noops on nil")
+  current_test_case = __run_test("noops on nil", context_stack);
+  if (setjmp(current_test_case->jump) == 0) {
+    current_test_case->failed = 1;
+    longjmp(current_test_case->jump, 0);
+
+    // Table relation = c_arel::Table("users");
+    // SelectManager sm = relation.skip(2);
+    // assert_equal(sm.to_sql(), "SELECT FROM users OFFSET 2", "DESCRP");
+  }
+  __end_test();
+
+  context_stack.pop_back();
+
+  // it("noops on nil")
+  current_test_case = __run_test("noops on nil", context_stack);
+  if (setjmp(current_test_case->jump) == 0) {
+    longjmp(current_test_case->jump, 0);
+
+    // Table relation = c_arel::Table("users");
+    // SelectManager sm = relation.skip(2);
+    // assert_equal(sm.to_sql(), "SELECT FROM users OFFSET 2", "DESCRP");
+  }
+  __end_test();
+
+
+
+  printf("\n%u tests, %u assertions, %u failures\n", (unsigned int)__tests.size(), 0, 0);
+
+  while (!__tests.empty()) {
+    free_test_case(__tests.back());
+    __tests.pop_back();
+  }
+}
+*/
+
+
+/*
 #define DO_ALLOC(TYPE) ((TYPE*) malloc(sizeof(TYPE)))
 #define GIT_MAX_TEST_CASES 64
 
@@ -29,6 +198,7 @@ struct testsuite {
   int asserts;
   test *list[GIT_MAX_TEST_CASES];
 };
+
 
 static void test_free(test *t) {
   if (t) {
@@ -68,9 +238,7 @@ void test__init(test *t, const char *name, const char *description) {
 }
 
 
-/*-------------------------------------------------------------------------*
- * Public assert methods
- *-------------------------------------------------------------------------*/
+
 
 static void fail_test(test *tc, const char *file, int line, const char *message) {
   char buf[1024];
@@ -89,26 +257,40 @@ static void fail_test(test *tc, const char *file, int line, const char *message)
     longjmp(*(tc->jump), 0);
 }
 
-void test__fail(test *tc, const char *file, int line, const char *message) {
+void __test_assert_true(test *tc, const char *file, int line, bool value, const char *message) {
   tc->asserts++;
-  fail_test(tc, file, line, message);
-}
-
-void test__assert(test *tc, const char *file, int line, const char *message, int condition) {
-  tc->asserts++;
-  if (condition == 0)
+  if (!value) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: TRUE\n");
+    }
     fail_test(tc, file, line, message);
+  }
 }
 
-void test__assert_pass(test *tc, const char *file, int line, const char *message, int ret_value) {
+// void __test_assert_equal(test *tc, const char *file, int line, const char *expected, const char *value, const char *message) {
+void __test_assert_equal(_test_case *tc, const char *file, int line, const char *expected, const char *value, const char *message) {
+  // tc->asserts++;
+  if (strcmp(expected, value) != 0) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: '%s' but was '%s'", expected, value);
+    }
+    // fail_test(tc, file, line, message);
+  }
+}
+
+void __test_assert_equal(test *tc, const char *file, int line, int expected, int value, const char *message) {
   tc->asserts++;
-  if (ret_value < 0)
+  if (expected != value) {
+    if (!message) {
+      message = &TMP_BUFFER[0];
+      sprintf(TMP_BUFFER, "expected: %i but was %i\n", expected, value);
+    }
     fail_test(tc, file, line, message);
+  }
 }
 
-/*-------------------------------------------------------------------------*
- * Test Suite
- *-------------------------------------------------------------------------*/
 
 static void testsuite_init(testsuite *ts) {
   ts->count = 0;
@@ -189,4 +371,4 @@ int testsuite_run(testsuite *ts) {
   free_suite(ts);
   return fail_count;
 }
-
+*/

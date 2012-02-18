@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <setjmp.h>
 
 #include <c-arel.h>
 
@@ -26,46 +27,69 @@
 
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 
-#define DECLARE_SUITE(SNAME) extern testsuite *test_suite_##SNAME(void)
-#define SUITE_NAME(SNAME) test_suite_##SNAME
 
-#define BEGIN_SUITE(SNAME) \
-  testsuite *test_suite_##SNAME(void);\
-  testsuite *test_suite_##SNAME(void) {\
-    testsuite *_gitsuite = testsuite_new(#SNAME);
+struct _test_case {
+  char *name;
+  char *message;
+  char *failed_pos;
 
-#define ADD_TEST(TNAME) \
-  testsuite_add(_gitsuite, _gittest__##TNAME);
+  unsigned char asserts;
 
-#define END_SUITE \
-    return _gitsuite;\
+  unsigned failed:1;
+  jmp_buf jump;
+};
+
+typedef void (*test_suite)(void);
+
+int run_test_suite(test_suite *suite_methods, int suite_count);
+_test_case * __run_test(const char *description, std::vector<const char *> &stack);
+void __end_test(void);
+
+
+#define TEST_SUITE(SNAME, DESCRIP, METHOD) \
+  void test_suite_##SNAME(void) { \
+    std::vector<const char *> context_stack; \
+    context_stack.push_back(DESCRIP); \
+    _test_case *_ctc; \
+    METHOD \
   }
 
-#define BEGIN_TEST(TNAME, DESC) \
-  static void _gittest__##TNAME(test *_gittest) { \
-    test__init(_gittest, #TNAME, DESC); \
-    {\
+#define DESCRIBE(DESCRIP, METHOD) \
+  context_stack.push_back(DESCRIP); \
+  METHOD; \
+  context_stack.pop_back();
 
-#define END_TEST }}
+// #define _end_describe \
+//   context_stack.pop_back();
 
-typedef struct test test;
-typedef struct testsuite testsuite;
-typedef void (*testfunc)(test *);
-typedef testsuite *(*test_suite)(void);
+#define IT(DESCRIP, METHOD) \
+  _ctc = __run_test(DESCRIP, context_stack); \
+  if (setjmp(_ctc->jump) == 0) \
+  METHOD \
+  __end_test();
 
-void test__init(test *t, const char *name, const char *description);
-void test__fail(test *tc, const char *file, int line, const char *message);
-void test__assert(test *tc, const char *file, int line, const char *message, int condition);
-void test__assert_pass(test *tc, const char *file, int line, const char *message, int ret_value);
+_test_case *current_test_case(void);
 
-#define must_pass(expr) test__assert_pass(_gittest, __FILE__, __LINE__, "Method failed: " #expr, (expr))
-#define must_fail(expr) test__assert(_gittest, __FILE__, __LINE__, "Expected method to fail: " #expr, (expr) < 0)
-#define must_be_true(expr) test__assert(_gittest, __FILE__, __LINE__, "Expression is not true: " #expr, !!(expr))
-#define must_be_like(expr, expected) test__assert(_gittest, __FILE__, __LINE__, "Expected string to be like: " #expected, strcmp(expr, expected) == 0)
 
-testsuite *testsuite_new(const char *name);
-void testsuite_add(testsuite *ts, testfunc test);
-int testsuite_run(testsuite *ts);
+#define DECLARE_SUITE(SNAME) extern void test_suite_##SNAME(void)
+#define SUITE_NAME(SNAME) test_suite_##SNAME
+
+
+#define MACRO_ARG_MATCH(arg1, arg2, arg3, arg4, ...) arg4
+// ASSERT_TRUE
+void __test_assert_true(const char *file, int line, bool value, const char *message);
+#define _test_assert_true(value)                        __test_assert_true(__FILE__, __LINE__, value, NULL)
+#define _test_assert_true_with_message(value, message)  __test_assert_true(__FILE__, __LINE__, value, message)
+#define _macro_assert_true(...) MACRO_ARG_MATCH(__VA_ARGS__, _test_assert_true_with_message, _test_assert_true, _test_assert_true, )
+#define assert_true(...) _macro_assert_true(__VA_ARGS__)(__VA_ARGS__)
+
+// ASSERT_EQUAL
+void __test_assert_equal(const char *file, int line, int expected, int value, const char *message);
+void __test_assert_equal(const char *file, int line, const char *expected, const char *value, const char *message);
+#define test_assert_equal(expected, value)                        __test_assert_equal(__FILE__, __LINE__, expected, value, NULL)
+#define test_assert_equal_with_message(expected, value, message)  __test_assert_equal(__FILE__, __LINE__, expected, value, message)
+#define macro_assert_equal(...) MACRO_ARG_MATCH(__VA_ARGS__, test_assert_equal_with_message, test_assert_equal, test_assert_equal, )
+#define assert_equal(...) macro_assert_equal(__VA_ARGS__)(__VA_ARGS__)
 
 #endif
 

@@ -9,11 +9,16 @@
 #define include_c_arel_util_h
 
 namespace c_arel {
+  namespace nodes {
+    class SqlLiteral;
+  }
+  
   extern std::vector<variant> zip_vector(std::vector<variant> src, std::vector<variant> target);
   extern std::string join_vector(std::vector<std::string> v);
   extern std::string join_vector(std::vector<std::string> v, const char *delimiter);
   extern const char * format_string(const std::string &fmt, ...);
   extern std::string gsub_string(const std::string &sData, const std::string &sFrom, const std::string &sTo);
+  extern nodes::SqlLiteral raw_sql(const char *sql);
 }
 
 #endif
