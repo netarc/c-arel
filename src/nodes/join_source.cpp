@@ -21,8 +21,8 @@ namespace c_arel {
     }
     
     bool JoinSource::isEmpty(void) {
-      std::vector<variant> rlist = right;
-      return !left && rlist.empty();
+      std::vector<variant> *rlist = static_cast<std::vector<variant> *>(*right);
+      return !left && rlist->empty();
     }
   }
 }

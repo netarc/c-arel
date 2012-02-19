@@ -56,6 +56,24 @@ namespace c_arel {
     select_statement->with = nodes::WithRecursive(a);
     return *this;
   }
+
+  int SelectManager::take(void) {
+    nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
+    return !!select_statement->limit ? (int)static_cast<nodes::Limit *>(*select_statement->limit)->expr : 0;
+  }
+
+  int SelectManager::offset(void) {
+    return skip();
+  }
+
+  int SelectManager::skip(void) {
+    nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
+    return !!select_statement->offset ? (int)static_cast<nodes::Offset *>(*select_statement->offset)->expr : 0;
+  }
+
+  SelectManager & SelectManager::offset(int amount) {
+    return skip(amount);
+  }
   
   SelectManager & SelectManager::skip(int amount) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
@@ -116,8 +134,7 @@ namespace c_arel {
   }
   
   SelectManager& SelectManager::project(variant projection) {
-  //# FIXME: converting these to SQLLiterals is probably not good, but
-  //# rails tests require it.
+    // FIXME: converting these to SQLLiterals is probably not good
     nodes::SelectCore *select_core = (nodes::SelectCore *)*this->ctx;
     if (projection.isString()) {
       select_core->projections.push_back(nodes::SqlLiteral(projection.toString()));
@@ -231,7 +248,10 @@ namespace c_arel {
     std::vector<variant> a = exprs;
     if (!!existing) {
       std::vector<variant> new_a;
-      new_a.push_back(existing);
+      if (existing.isType<nodes::Having>())
+        new_a.push_back(static_cast<nodes::Having *>(*existing)->expr);
+      else
+        throw "uhandled collapse type";
       new_a.insert(new_a.end(), a.begin(), a.end());
       a = new_a;
     }

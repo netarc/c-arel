@@ -196,7 +196,7 @@ namespace c_arel {
     //     (visit(o.offset) if o.offset),
     if (!!node->offset) pieces.push_back(visit(node->offset));
     //     (visit(o.lock) if o.lock),
-    
+
     return join_vector(pieces, " ");
   }
   
@@ -211,12 +211,10 @@ namespace c_arel {
     if (!!node->set_quantifier) pieces.push_back(visit(node->set_quantifier));
     if (!node->projections.empty()) pieces.push_back(join_vector(visit_Array(node->projections), ", "));
 
-    //     ("FROM #{visit(o.source)}" if o.source && !o.source.empty?),
-    std::string strFROM = "FROM ";
     if (!!node->source) {
       nodes::JoinSource *nodeSource = static_cast<nodes::JoinSource *>(*node->source);
       if (!nodeSource->isEmpty())
-        pieces.push_back(strFROM + visit(node->source));
+        pieces.push_back(format_string("FROM %s", visit(node->source).c_str()));
     }
 
     if (!node->wheres.empty()) pieces.push_back(format_string("WHERE %s", join_vector(visit_Array(node->wheres), " AND ").c_str()));
@@ -234,8 +232,6 @@ namespace c_arel {
       std::vector<variant> *v = static_cast<std::vector<variant> *>(**it);
       variant value = v->at(0);
       variant attr = v->at(1);
-      printf("has value: %s\n", value.type().name());
-      printf("has attr: %s\n", attr.type().name());
       if (value.isType<nodes::SqlLiteral>())
         vals.push_back(visit_Arel_Nodes_SqlLiteral(value));
       else
@@ -372,7 +368,9 @@ namespace c_arel {
 
   std::string ToSql::visit_Arel_Nodes_TableAlias(variant & o) {
     nodes::TableAlias *node = (nodes::TableAlias *)*o;
-    return format_string("%s %s", visit(node->relation()).c_str(), quote_table_name(node->name()).c_str());
+    std::string relation = visit(node->relation());
+    std::string table_name = quote_table_name(node->name());
+    return format_string("%s %s", relation.c_str(), table_name.c_str());
   }
 
   std::string ToSql::visit_Arel_Nodes_Between(variant & o) {
@@ -636,6 +634,8 @@ namespace c_arel {
       stream << (int)value;
       return stream.str();
     }
+    else if (value.isType<nodes::SqlLiteral>())
+      value = static_cast<nodes::SqlLiteral *>(*value)->value;
 
 //        @connection.quote value, column    
     return format_string("\"%s\"", value.toString());
@@ -648,6 +648,9 @@ namespace c_arel {
   }
   
   std::string ToSql::quote_column_name(variant name) {
+    if (name.isType<nodes::SqlLiteral>())
+      name = static_cast<nodes::SqlLiteral *>(*name)->value;
+
     return gsub_string(name.toString(), "\"", "\"\"");
 //    @quoted_columns[name] ||= Arel::Nodes::SqlLiteral === name ? name : @connection.quote_column_name(name)
   }

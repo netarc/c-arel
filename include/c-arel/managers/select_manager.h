@@ -25,6 +25,10 @@ namespace c_arel {
     SelectManager & with_recursive(std::vector<variant> subqueries);
     SelectManager & with_recursive(variant subquery);
     
+    int offset(void);
+    int skip(void);
+    int take(void);
+    SelectManager & offset(int amount);
     SelectManager & skip(int amount);
     SelectManager & take(int limit);
     nodes::TableAlias as(const char *other);
