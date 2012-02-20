@@ -24,7 +24,7 @@ namespace c_arel {
   }
   
   const char * TreeManager::to_sql(void) {
-    return visitor()->accept(this->ast).c_str();
+    return ToSql(NULL).accept(this->ast).c_str();
   }
   
   TreeManager & TreeManager::where(variant expr) {

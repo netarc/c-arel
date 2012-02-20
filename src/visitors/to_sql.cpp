@@ -21,6 +21,7 @@ namespace c_arel {
       _to_sql_method_lookup["Arel::Nodes::InsertStatement"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_InsertStatement;
       _to_sql_method_lookup["Arel::Nodes::SelectStatement"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_SelectStatement;
       _to_sql_method_lookup["Arel::Nodes::SelectCore"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_SelectCore;
+      _to_sql_method_lookup["Arel::Nodes::Exists"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Exists;
       _to_sql_method_lookup["Arel::Nodes::Values"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Values;
       _to_sql_method_lookup["Arel::Nodes::Bin"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Bin;
       _to_sql_method_lookup["Arel::Nodes::Distinct"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_Distinct;

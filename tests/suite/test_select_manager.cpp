@@ -107,50 +107,128 @@ TEST_SUITE(select_manager, "select manager", {
         assert_equal("SELECT FROM users INNER JOIN users users_2 ON \"foo\" AND \"bar\"", manager.to_sql());
       })
     })
-
-    DESCRIBE("skip", {
-      IT("should add an offset", {
-        Table table = c_arel::Table("users");
-        SelectManager manager = table.from(table);
-        manager.skip(10);
-        assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
-      })
-
-      IT("should chain", {
-        Table table = c_arel::Table("users");
-        assert_equal("SELECT FROM users OFFSET 10", table.from(table).skip(10).to_sql());
-      })
-    })
-
-    DESCRIBE("offset", {
-      IT("should add an offset", {
-        Table table = c_arel::Table("users");
-        SelectManager manager = table.from(table);
-        manager.offset(10);
-        assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
-      })
-
-      IT("should remove an offset", {
-        Table table = c_arel::Table("users");
-        SelectManager manager = table.from(table);
-        manager.offset(10);
-        assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
-
-        manager.offset(NULL);
-        assert_equal("SELECT FROM users", manager.to_sql());
-      })
-
-      IT("should return the offset", {
-        Table table = c_arel::Table("users");
-        SelectManager manager = table.from(table);
-        manager.offset(10);
-        assert_equal(10, manager.offset());
-      })
-    })
-
-    DESCRIBE("exists", {
-      
-    })
-
   }) // backwards compatibility
+
+
+  DESCRIBE("skip", {
+    IT("should add an offset", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.skip(10);
+      assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
+    })
+
+    IT("should chain", {
+      Table table = c_arel::Table("users");
+      assert_equal("SELECT FROM users OFFSET 10", table.from(table).skip(10).to_sql());
+    })
+  })
+
+  DESCRIBE("offset", {
+    IT("should add an offset", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.offset(10);
+      assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
+    })
+
+    IT("should remove an offset", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.offset(10);
+      assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
+
+      manager.offset(NULL);
+      assert_equal("SELECT FROM users", manager.to_sql());
+    })
+
+    IT("should return the offset", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.offset(10);
+      assert_equal(10, manager.offset());
+    })
+  })
+
+  DESCRIBE("exists", {
+    IT("should create an exists clause", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.project("*");
+      SelectManager m2 = SelectManager(NULL);
+      m2.project(manager.exists());
+
+      char tmp[1024];
+      sprintf(tmp, "SELECT EXISTS (%s)", manager.to_sql());
+      assert_equal(tmp, m2.to_sql());
+    })
+
+    IT("can be aliased", {
+      Table table = c_arel::Table("users");
+      SelectManager manager = table.from(table);
+      manager.project("*");
+      SelectManager m2 = SelectManager(NULL);
+      m2.project(manager.exists().as("foo"));
+
+      char tmp[1024];
+      sprintf(tmp, "SELECT EXISTS (%s) AS foo", manager.to_sql());
+      assert_equal(tmp, m2.to_sql());
+    })
+  })
+
+  DESCRIBE("union", {
+    IT("should union two managers", {
+      Table table = c_arel::Table("users");
+      SelectManager m1 = table.from(table);
+      m1.project("*");
+      m1.where(table["age"].lt(18));
+      SelectManager m2 = table.from(table);
+      m2.project("*");
+      m2.where(table["age"].gt(99));
+      nodes::Union node = m1.union_with(m2);
+      assert_equal("(SELECT * FROM users WHERE users.age < 18 UNION SELECT * FROM users WHERE users.age > 99)", node.to_sql());
+    })
+
+    IT("should union all", {
+      Table table = c_arel::Table("users");
+      SelectManager m1 = table.from(table);
+      m1.project("*");
+      m1.where(table["age"].lt(18));
+      SelectManager m2 = table.from(table);
+      m2.project("*");
+      m2.where(table["age"].gt(99));
+      nodes::UnionAll node = m1.union_all(m2);
+      assert_equal("(SELECT * FROM users WHERE users.age < 18 UNION ALL SELECT * FROM users WHERE users.age > 99)", node.to_sql());
+    })
+  })
+
+  DESCRIBE("intersect", {
+    IT("should intersect two managers", {
+      Table table = c_arel::Table("users");
+      SelectManager m1 = table.from(table);
+      m1.project("*");
+      m1.where(table["age"].gt(18));
+      SelectManager m2 = table.from(table);
+      m2.project("*");
+      m2.where(table["age"].lt(99));
+      nodes::Intersect node = m1.intersect(m2);
+      assert_equal("(SELECT * FROM users WHERE users.age > 18 INTERSECT SELECT * FROM users WHERE users.age < 99)", node.to_sql());
+    })
+  })
+
+  DESCRIBE("except", {
+    IT("should intersect two managers", {
+      Table table = c_arel::Table("users");
+      SelectManager m1 = table.from(table);
+      m1.project("*");
+      m1.where(table["age"].between(18, 60));
+      SelectManager m2 = table.from(table);
+      m2.project("*");
+      m2.where(table["age"].between(40, 99));
+      nodes::Except node = m1.except(m2);
+      assert_equal("(SELECT * FROM users WHERE users.age BETWEEN 18 AND 60 EXCEPT SELECT * FROM users WHERE users.age BETWEEN 40 AND 99)", node.to_sql());
+    })
+  })
+
+
 }) // select manager

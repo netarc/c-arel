@@ -24,6 +24,11 @@ namespace c_arel {
       return nodes::And(children);
     }
     
+    const char * Node::to_sql(void) {
+      variant s = self();
+      return ToSql(NULL).accept(s).c_str();
+    }
+  
     const char * Node::classname(void) {
       return "Arel::Nodes::Node";
     }
