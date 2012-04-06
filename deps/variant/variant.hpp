@@ -24,6 +24,7 @@
 #ifndef variant_h
 #define variant_h
 
+#include <string>
 #include <memory>
 #include <typeinfo>
 

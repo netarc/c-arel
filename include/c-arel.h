@@ -13,7 +13,7 @@
 #include <string>
 #include <map>
 
-#include "variant.hpp"
+#include "../deps/variant/variant.hpp"
 #include "c-arel/util.h"
 #include "c-arel/derived.h"
 
