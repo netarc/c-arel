@@ -79,24 +79,25 @@ namespace c_arel {
       _to_sql_method_lookup["String"] = (visitor_method_t)&ToSql::quoted;
       _to_sql_method_lookup["Integer"] = (visitor_method_t)&ToSql::literal;
       _to_sql_method_lookup["Float"] = (visitor_method_t)&ToSql::literal;
-      
+
 //      casted_visitor_method<nodes::SelectStatement *>((casted_visitor_method<nodes::SelectStatement *>::method_t)&ToSql::_visit_Arel_Nodes_SelectStatement);
     }
     return _to_sql_method_lookup;
   }
 
   ToSql::ToSql(variant connection) {
+    this->connection = connection;
     this->last_column = "";
   }
-  
+
   std::string ToSql::accept(variant & object) {
     this->last_column = "";
     return Visitor::accept(object);
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_DeleteStatement(variant & o) {
     nodes::DeleteStatement *node = static_cast<nodes::DeleteStatement *>(*o);
-    
+
     std::vector<std::string> pieces;
     pieces.push_back("DELETE FROM");
     pieces.push_back(visit(node->relation()));
@@ -116,7 +117,7 @@ namespace c_arel {
      stmt.limit       = o.limit
      stmt.orders      = o.orders
      stmt
-   end   
+   end
    */
   nodes::SelectStatement ToSql::build_subselect(variant key, variant o) {
     nodes::UpdateStatement *node = static_cast<nodes::UpdateStatement *>(*o);
@@ -131,10 +132,10 @@ namespace c_arel {
     stmt.orders = node->orders;
     return stmt;
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_UpdateStatement(variant & o) {
     nodes::UpdateStatement *node = static_cast<nodes::UpdateStatement *>(*o);
-    
+
     std::vector<variant> wheres;
     if (node->orders.empty() && !node->limit)
       wheres = node->wheres;
@@ -153,7 +154,7 @@ namespace c_arel {
     return join_vector(pieces, " ");
   }
 
-  
+
   std::string ToSql::visit_Arel_Nodes_InsertStatement(variant & o) {
     nodes::InsertStatement *node = static_cast<nodes::InsertStatement *>(*o);
 
@@ -177,12 +178,12 @@ namespace c_arel {
     std::string alias = !!node->alias ? format_string(" AS %s", visit(node->alias).c_str()) : "";
     return format_string("EXISTS (%s)%s", visit(node->expressions).c_str(), alias.c_str());
   }
-   
+
   std::string ToSql::visit_Arel_Nodes_SelectStatement(variant & o) {
     nodes::SelectStatement *node = static_cast<nodes::SelectStatement *>(*o);
-    
+
     std::vector<std::string> pieces;
-    
+
     //     (visit(o.with) if o.with),
     if (!!node->with) pieces.push_back(visit(node->with));
     //     o.cores.map { |x| visit_Arel_Nodes_SelectCore x }.join,
@@ -200,10 +201,10 @@ namespace c_arel {
 
     return join_vector(pieces, " ");
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_SelectCore(variant & o) {
     nodes::SelectCore *node = static_cast<nodes::SelectCore *>(*o);
-    
+
     std::vector<std::string> pieces;
     std::vector<variant>::iterator wIt;
 
@@ -224,7 +225,7 @@ namespace c_arel {
 
     return join_vector(pieces, " ");
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Values(variant & o) {
     nodes::Values *node = static_cast<nodes::Values *>(*o);
     std::vector<variant> zipped = zip_vector(node->expressions(), node->columns());
@@ -240,7 +241,7 @@ namespace c_arel {
     }
     return format_string("VALUES (%s)", join_vector(vals, ", ").c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Bin(variant & o) {
     nodes::Bin *node = static_cast<nodes::Bin *>(*o);
     return visit(node->expr);
@@ -249,37 +250,37 @@ namespace c_arel {
   std::string ToSql::visit_Arel_Nodes_Distinct(variant & o) {
     return "DISTINCT";
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_With(variant & o) {
     nodes::With *node = static_cast<nodes::With *>(*o);
     return format_string("WITH %s", join_vector(visit_Array(node->children()), ", ").c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_WithRecursive(variant & o) {
     nodes::WithRecursive *node = static_cast<nodes::WithRecursive *>(*o);
     return format_string("WITH RECURSIVE %s", join_vector(visit_Array(node->children()), ", ").c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Union(variant & o) {
     nodes::Union *node = (nodes::Union *)*o;
     return format_string("(%s UNION %s)", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_UnionAll(variant & o) {
     nodes::UnionAll *node = (nodes::UnionAll *)*o;
     return format_string("(%s UNION ALL %s)", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Intersect(variant & o) {
     nodes::Intersect *node = (nodes::Intersect *)*o;
     return format_string("(%s INTERSECT %s)", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Except(variant & o) {
     nodes::Except *node = (nodes::Except *)*o;
     return format_string("(%s EXCEPT %s)", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Having(variant & o) {
     nodes::Having *node = (nodes::Having *)*o;
     return format_string("HAVING %s", visit(node->expr).c_str());
@@ -289,7 +290,7 @@ namespace c_arel {
     nodes::Offset *node = (nodes::Offset *)*o;
     return format_string("OFFSET %s", visit(node->expr).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Limit(variant & o) {
     nodes::Limit *node = (nodes::Limit *)*o;
     return format_string("LIMIT %s", visit(node->expr).c_str());
@@ -303,7 +304,7 @@ namespace c_arel {
     nodes::Ascending *node = (nodes::Ascending *)*o;
     return format_string("%s ASC", visit(node->expr).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Descending(variant & o) {
     nodes::Descending *node = (nodes::Descending *)*o;
     return format_string("%s DESC", visit(node->expr).c_str());
@@ -313,7 +314,7 @@ namespace c_arel {
     nodes::Grouping *node = (nodes::Grouping *)*o;
     return format_string("(%s)", visit(node->expr).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Group(variant & o) {
     nodes::Group *node = (nodes::Group *)*o;
     return visit(node->expr);
@@ -334,7 +335,7 @@ namespace c_arel {
     std::string alias = !!node->alias ? format_string(" AS %s", visit(node->alias).c_str()) : "";
     return format_string("COUNT(%s%s)%s", node->distinct ? "DISTINCT " : "", exprs.c_str(), alias.c_str());
   }
-    
+
   std::string ToSql::visit_Arel_Nodes_Sum(variant & o) {
     nodes::Sum *node = (nodes::Sum *)*o;
     std::vector<variant> *a = static_cast<std::vector<variant> *>(*node->expressions);
@@ -342,7 +343,7 @@ namespace c_arel {
     std::string alias = !!node->alias ? format_string(" AS %s", visit(node->alias).c_str()) : "";
     return format_string("SUM(%s)%s", exprs.c_str(), alias.c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Max(variant & o) {
     nodes::Max *node = (nodes::Max *)*o;
     std::vector<variant> *a = static_cast<std::vector<variant> *>(*node->expressions);
@@ -350,7 +351,7 @@ namespace c_arel {
     std::string alias = !!node->alias ? format_string(" AS %s", visit(node->alias).c_str()) : "";
     return format_string("MAX(%s)%s", exprs.c_str(), alias.c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Min(variant & o) {
     nodes::Min *node = (nodes::Min *)*o;
     std::vector<variant> *a = static_cast<std::vector<variant> *>(*node->expressions);
@@ -358,7 +359,7 @@ namespace c_arel {
     std::string alias = !!node->alias ? format_string(" AS %s", visit(node->alias).c_str()) : "";
     return format_string("MIN(%s)%s", exprs.c_str(), alias.c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Avg(variant & o) {
     nodes::Avg *node = (nodes::Avg *)*o;
     std::vector<variant> *a = static_cast<std::vector<variant> *>(*node->expressions);
@@ -383,27 +384,27 @@ namespace c_arel {
     nodes::GreaterThanOrEqual *node = (nodes::GreaterThanOrEqual *)*o;
     return format_string("%s >= %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_GreaterThan(variant & o) {
     nodes::GreaterThan *node = (nodes::GreaterThan *)*o;
     return format_string("%s > %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_LessThanOrEqual(variant & o) {
     nodes::LessThanOrEqual *node = (nodes::LessThanOrEqual *)*o;
     return format_string("%s <= %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_LessThan(variant & o) {
     nodes::LessThan *node = (nodes::LessThan *)*o;
     return format_string("%s < %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Matches(variant & o) {
     nodes::Matches *node = (nodes::Matches *)*o;
     return format_string("%s LIKE %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_DoesNotMatch(variant & o) {
     nodes::DoesNotMatch *node = (nodes::DoesNotMatch *)*o;
     return format_string("%s NOT LIKE %s", visit(node->left).c_str(), visit(node->right).c_str());
@@ -425,17 +426,17 @@ namespace c_arel {
     nodes::StringJoin *node = static_cast<nodes::StringJoin *>(*o);
     return visit(node->left);
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_OuterJoin(variant & o) {
     nodes::OuterJoin *node = static_cast<nodes::OuterJoin *>(*o);
     return format_string("LEFT OUTER JOIN %s %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_InnerJoin(variant & o) {
     nodes::InnerJoin *node = static_cast<nodes::InnerJoin *>(*o);
     return format_string("INNER JOIN %s %s", visit(node->left).c_str(), !!node->right ? visit(node->right).c_str() : "");
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_On(variant & o) {
     nodes::On *node = static_cast<nodes::On *>(*o);
     return format_string("ON %s", visit(node->expr).c_str());
@@ -445,17 +446,17 @@ namespace c_arel {
     nodes::Not *node = static_cast<nodes::Not *>(*o);
     return format_string("NOT (%s)", visit(node->expr).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Table(variant & o) {
-    Table *table = static_cast<Table *>(*o);    
+    Table *table = static_cast<Table *>(*o);
     return !!table->table_alias ? format_string("%s %s", quote_table_name(table->name).c_str(), quote_table_name(table->table_alias).c_str()) : quote_table_name(table->name);
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_In(variant & o) {
     nodes::In *node = static_cast<nodes::In *>(*o);
     return format_string("%s IN (%s)", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_NotIn(variant & o) {
     nodes::In *node = static_cast<nodes::In *>(*o);
     return format_string("%s NOT IN (%s)", visit(node->left).c_str(), visit(node->right).c_str());
@@ -469,7 +470,7 @@ namespace c_arel {
     }
     return join_vector(pieces, " AND ");
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_Or(variant & o) {
     nodes::Or *node = static_cast<nodes::Or *>(*o);
     return format_string("%s OR %s", visit(node->left).c_str(), visit(node->right).c_str());
@@ -478,13 +479,13 @@ namespace c_arel {
   std::string ToSql::visit_Arel_Nodes_Assignment(variant & o) {
     nodes::Assignment *node = static_cast<nodes::Assignment *>(*o);
     return format_string("%s = %s", visit(node->left).c_str(), quote(node->right, column_for(node->left)).c_str());
-  }  
+  }
 
   std::string ToSql::visit_Arel_Nodes_Equality(variant & o) {
     nodes::Equality *node = static_cast<nodes::Equality *>(*o);
 
     std::string left = visit(node->left);
-    
+
     if (!node->right)
       return left + " IS NULL";
     else
@@ -499,12 +500,12 @@ namespace c_arel {
     else
       return format_string("%s != %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_As(variant & o) {
     nodes::As *node = static_cast<nodes::As *>(*o);
     return format_string("%s AS %s", visit(node->left).c_str(), visit(node->right).c_str());
   }
-  
+
   std::string ToSql::visit_Arel_Nodes_UnqualifiedColumn(variant & o) {
     nodes::UnqualifiedColumn *node = static_cast<nodes::UnqualifiedColumn *>(*o);
     return quote_column_name(node->name());
@@ -512,7 +513,7 @@ namespace c_arel {
 
   std::string ToSql::visit_Arel_Attribute(variant & o) {
     Attribute *attribute = (Attribute *)*o;
-    
+
     last_column = column_for(o);
     std::string join_name;
 
@@ -534,7 +535,7 @@ namespace c_arel {
     nodes::SqlLiteral *l = (nodes::SqlLiteral *)*o;
     return literal(l->value);
   }
-  
+
   std::string ToSql::literal(variant & o) {
     if (o.isString()) {
       return o.toString();
@@ -559,7 +560,7 @@ namespace c_arel {
   std::string ToSql::quoted(variant o) {
     return quote(o, last_column);
   }
-  
+
 //  alias :visit_ActiveSupport_Multibyte_Chars :quoted
 //  alias :visit_ActiveSupport_StringInquirer  :quoted
 //  alias :visit_BigDecimal                    :quoted
@@ -575,7 +576,7 @@ namespace c_arel {
 //  alias :visit_Time                          :quoted
 //  alias :visit_TrueClass                     :quoted
 
-  
+
   std::string ToSql::visit_Arel_Nodes_InfixOperation(variant & o) {
     nodes::InfixOperation *node = static_cast<nodes::InfixOperation *>(*o);
     return format_string("%s %s %s", visit(node->left).c_str(), node->op.c_str(), visit(node->right).c_str());
@@ -589,17 +590,17 @@ namespace c_arel {
     }
     return pieces;
   }
-  
+
   std::string ToSql::array(variant & o) {
     std::vector<variant> a = o;
     std::vector<std::string> pieces = visit_Array(a);
     return pieces.empty() ? "NULL" : join_vector(pieces, ", ");
   }
-  
+
   bool ToSql::table_exists(const char *name) {
     return true;
   }
-  
+
   std::string ToSql::column_for(variant o) {
     // TODO
     //name    = attr.name.to_s
@@ -616,7 +617,7 @@ namespace c_arel {
 
 
   std::string ToSql::quote(variant value) {
-    return quote(value, NULL);
+    return quote(value, last_column);
   }
 
   std::string ToSql::quote(variant value, variant column) {
@@ -638,21 +639,25 @@ namespace c_arel {
     else if (value.isType<nodes::SqlLiteral>())
       value = static_cast<nodes::SqlLiteral *>(*value)->value;
 
-//        @connection.quote value, column    
-    return format_string("\"%s\"", value.toString());
+    // return format_string("\"%s\"", value.toString());
+    return !connection ? format_string("\"%s\"", value.toString()) :
+                          static_cast<Connection *>(*connection)->quote(value);
   }
-  
+
   std::string ToSql::quote_table_name(variant name) {
-    return quote_column_name(name);
-//    return name if Arel::Nodes::SqlLiteral === name
-//    @quoted_tables[name] ||= @connection.quote_table_name(name)
+    // TODO: Fixme, I crash
+    // if (name.isType<nodes::SqlLiteral>())
+    //   return name;
+
+    return !connection ? quote_column_name(name) :
+                          static_cast<Connection *>(*connection)->quote_table_name(name);
   }
-  
+
   std::string ToSql::quote_column_name(variant name) {
     if (name.isType<nodes::SqlLiteral>())
       name = static_cast<nodes::SqlLiteral *>(*name)->value;
 
-    return gsub_string(name.toString(), "\"", "\"\"");
-//    @quoted_columns[name] ||= Arel::Nodes::SqlLiteral === name ? name : @connection.quote_column_name(name)
+    return !connection ? gsub_string(name.toString(), "\"", "\"\"") :
+                          static_cast<Connection *>(*connection)->quote_column_name(name);
   }
 }

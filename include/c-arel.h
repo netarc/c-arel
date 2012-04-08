@@ -16,6 +16,9 @@
 #include "../deps/variant/variant.hpp"
 #include "c-arel/util.h"
 #include "c-arel/derived.h"
+// Should C-Arel have engines & connections or just one interface
+#include "c-arel/engine.h"
+#include "c-arel/connection.h"
 
 #include "c-arel/visitors/visitor.h"
 #include "c-arel/visitors/to_sql.h"

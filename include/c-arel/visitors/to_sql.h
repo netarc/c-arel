@@ -11,13 +11,13 @@ namespace c_arel {
   namespace nodes {
     class SelectStatement;
   }
-  
+
   class ToSql : public Visitor {
   public:
     ToSql(variant connection);
-    
+
     virtual std::string accept(variant & object);
-    
+
   protected:
 
     virtual std::string visit_Arel_Nodes_DeleteStatement(variant & o);
@@ -30,7 +30,7 @@ namespace c_arel {
     virtual std::string visit_Arel_Nodes_Values(variant & o);
     virtual std::string visit_Arel_Nodes_Bin(variant & o);
     virtual std::string visit_Arel_Nodes_Distinct(variant & o);
-     
+
     /*
      def visit_Arel_Nodes_DistinctOn o
        raise NotImplementedError, 'DISTINCT ON not implemented for this db'
@@ -38,12 +38,12 @@ namespace c_arel {
      */
     virtual std::string visit_Arel_Nodes_With(variant & o);
     virtual std::string visit_Arel_Nodes_WithRecursive(variant & o);
-    
+
     virtual std::string visit_Arel_Nodes_Union(variant & o);
     virtual std::string visit_Arel_Nodes_UnionAll(variant & o);
     virtual std::string visit_Arel_Nodes_Intersect(variant & o);
     virtual std::string visit_Arel_Nodes_Except(variant & o);
-    
+
     virtual std::string visit_Arel_Nodes_Having(variant & o);
     virtual std::string visit_Arel_Nodes_Offset(variant & o);
     virtual std::string visit_Arel_Nodes_Limit(variant & o);
@@ -54,7 +54,7 @@ namespace c_arel {
      visit o.expr
      end
      */
-    
+
     virtual std::string visit_Arel_Nodes_Ascending(variant & o);
     virtual std::string visit_Arel_Nodes_Descending(variant & o);
     virtual std::string visit_Arel_Nodes_Grouping(variant & o);
@@ -82,7 +82,7 @@ namespace c_arel {
     virtual std::string visit_Arel_Table(variant & o);
     virtual std::string visit_Arel_Nodes_In(variant & o);
     virtual std::string visit_Arel_Nodes_NotIn(variant & o);
-    virtual std::string visit_Arel_Nodes_And(variant & o);     
+    virtual std::string visit_Arel_Nodes_And(variant & o);
     virtual std::string visit_Arel_Nodes_Or(variant & o);
     virtual std::string visit_Arel_Nodes_Assignment(variant & o);
     virtual std::string visit_Arel_Nodes_Equality(variant & o);
@@ -105,6 +105,7 @@ namespace c_arel {
     virtual std::string quote_column_name(variant name);
 
     std::string last_column;
+    variant connection;
 
     // TODO: lame method lookup - probably could be cleaned up...
   public:

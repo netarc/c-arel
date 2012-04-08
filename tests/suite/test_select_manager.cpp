@@ -24,7 +24,7 @@ TEST_SUITE(select_manager, "select manager", {
         sm.project("*");
         sm.from("zomg");
         nodes::TableAlias as = sm.as("foo");
-        
+
         sm = SelectManager(NULL);
         sm.project("name");
         sm.from(as);
@@ -230,5 +230,39 @@ TEST_SUITE(select_manager, "select manager", {
     })
   })
 
+  DESCRIBE("with", {
+    IT("should support WITH RECURSIVE", {
+      Table comments = c_arel::Table("comments");
+      Attribute comments_id = comments["id"];
+      Attribute comments_parent_id = comments["parent_id"];
 
+      Table replies = c_arel::Table("replies");
+      Attribute replies_id = replies["id"];
+
+      SelectManager recursive_term = SelectManager(NULL);
+      /*
+      recursive_term.from(comments).project(comments_id, comments_parent_id).where(comments_id.eq 42)
+
+        non_recursive_term = Arel::SelectManager.new Table.engine
+        non_recursive_term.from(comments).project(comments_id, comments_parent_id).join(replies).on(comments_parent_id.eq replies_id)
+
+        union = recursive_term.union(non_recursive_term)
+
+        as_statement = Arel::Nodes::As.new replies, union
+
+        manager = Arel::SelectManager.new Table.engine
+        manager.with(:recursive, as_statement).from(replies).project(Arel.star)
+
+        sql = manager.to_sql
+        sql.must_be_like %{
+          WITH RECURSIVE "replies" AS (
+              SELECT "comments"."id", "comments"."parent_id" FROM "comments" WHERE "comments"."id" = 42
+            UNION
+              SELECT "comments"."id", "comments"."parent_id" FROM "comments" INNER JOIN "replies" ON "comments"."parent_id" = "replies"."id"
+          )
+          SELECT * FROM "replies"
+        }
+        */
+    })
+  })
 }) // select manager
