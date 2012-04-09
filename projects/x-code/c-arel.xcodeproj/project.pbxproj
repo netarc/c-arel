@@ -97,6 +97,8 @@
 		CB903AC314F1C96C004226EF /* visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9514F1C96C004226EF /* visitor.h */; };
 		CB903AC414F1C96C004226EF /* c-arel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9614F1C96C004226EF /* c-arel.h */; };
 		CB903AC814F1C983004226EF /* variant.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CB903AC714F1C983004226EF /* variant.hpp */; };
+		CBF3107C1533A09200FE429B /* connection.h in Headers */ = {isa = PBXBuildFile; fileRef = CBF3107B1533A09200FE429B /* connection.h */; };
+		CBF3107F1533A09C00FE429B /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF3107E1533A09C00FE429B /* connection.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -191,6 +193,8 @@
 		CB903A9514F1C96C004226EF /* visitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = visitor.h; sourceTree = "<group>"; };
 		CB903A9614F1C96C004226EF /* c-arel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "c-arel.h"; sourceTree = "<group>"; };
 		CB903AC714F1C983004226EF /* variant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = variant.hpp; sourceTree = "<group>"; };
+		CBF3107B1533A09200FE429B /* connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = connection.h; sourceTree = "<group>"; };
+		CBF3107E1533A09C00FE429B /* connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = connection.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +229,7 @@
 		CB903A0A14F1C95C004226EF /* src */ = {
 			isa = PBXGroup;
 			children = (
+				CBF3107E1533A09C00FE429B /* connection.cpp */,
 				CB903A0B14F1C95C004226EF /* alias_predication.cpp */,
 				CB903A0C14F1C95C004226EF /* attribute.cpp */,
 				CB903A0D14F1C95C004226EF /* base.cpp */,
@@ -310,6 +315,7 @@
 		CB903A6514F1C96C004226EF /* c-arel */ = {
 			isa = PBXGroup;
 			children = (
+				CBF3107B1533A09200FE429B /* connection.h */,
 				CB903A6614F1C96C004226EF /* alias_predication.h */,
 				CB903A6714F1C96C004226EF /* attribute.h */,
 				CB903A6814F1C96C004226EF /* base.h */,
@@ -454,6 +460,7 @@
 				CB903AC314F1C96C004226EF /* visitor.h in Headers */,
 				CB903AC414F1C96C004226EF /* c-arel.h in Headers */,
 				CB903AC814F1C983004226EF /* variant.hpp in Headers */,
+				CBF3107C1533A09200FE429B /* connection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +558,7 @@
 				CB903A6114F1C95C004226EF /* util.cpp in Sources */,
 				CB903A6214F1C95C004226EF /* to_sql.cpp in Sources */,
 				CB903A6314F1C95C004226EF /* visitor.cpp in Sources */,
+				CBF3107F1533A09C00FE429B /* connection.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
