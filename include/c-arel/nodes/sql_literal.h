@@ -10,12 +10,12 @@
 
 namespace c_arel {
   namespace nodes {
-    class SqlLiteral : virtual  public Derived {
+    class SqlLiteral : virtual public Derived {
     public:
       SqlLiteral(const char *value);
-      
+
       variant value;
-      
+
       // inheritance/rtii support
       virtual variant self(void) { return *this; }
       virtual const char *classname(void);

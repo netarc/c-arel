@@ -14,7 +14,7 @@ namespace c_arel {
 
   class ToSql : public Visitor {
   public:
-    ToSql(variant connection);
+    ToSql(Connection *connection=NULL);
 
     virtual std::string accept(variant & object);
 
@@ -105,7 +105,7 @@ namespace c_arel {
     virtual std::string quote_column_name(variant name);
 
     std::string last_column;
-    variant connection;
+    Connection *connection;
 
     // TODO: lame method lookup - probably could be cleaned up...
   public:

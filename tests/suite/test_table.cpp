@@ -46,8 +46,8 @@ TEST_SUITE(table, "table", {
   DESCRIBE("order", {
     IT("should take an order", {
       Table relation = c_arel::Table("users");
-      SelectManager mgr = relation.order("foo");
-      assert_equal(mgr.to_sql(), "SELECT FROM users ORDER BY \"foo\"");
+      SelectManager mgr = relation.order(c_arel::nodes::SqlLiteral("foo"));
+      assert_equal(mgr.to_sql(), "SELECT FROM users ORDER BY foo");
     })
   })
 

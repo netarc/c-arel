@@ -21,7 +21,7 @@ namespace c_arel {
   }
 
   std::string Connection::quote_string(std::string value) {
-    return gsub_string(value, "'", "''");
+    return gsub_string(gsub_string(value, "'", "''"), "\\", "\\\\");
   }
 
   Connection _base_connection;

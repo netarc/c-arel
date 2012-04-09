@@ -6,7 +6,7 @@ TEST_SUITE(select_manager, "select manager", {
   DESCRIBE("backwards compatibility", {
     DESCRIBE("as", {
       IT("makes an AS node by grouping the AST", {
-        SelectManager sm = SelectManager(NULL);
+        SelectManager sm = SelectManager();
         nodes::TableAlias as = sm.as("foo");
         assert_true(as.left.isType<nodes::Grouping>());
         assert_true(sm.ast.type() == static_cast<nodes::Grouping *>(*as.left)->expr.type());
@@ -14,18 +14,18 @@ TEST_SUITE(select_manager, "select manager", {
       })
 
       IT("converts right to SqlLiteral if a string", {
-        SelectManager sm = SelectManager(NULL);
+        SelectManager sm = SelectManager();
         nodes::TableAlias as = sm.as("foo");
         assert_true(as.right.isType<nodes::SqlLiteral>());
       })
 
       IT("can make a subselect", {
-        SelectManager sm = SelectManager(NULL);
+        SelectManager sm = SelectManager();
         sm.project("*");
         sm.from("zomg");
         nodes::TableAlias as = sm.as("foo");
 
-        sm = SelectManager(NULL);
+        sm = SelectManager();
         sm.project("name");
         sm.from(as);
         assert_equal("SELECT name FROM (SELECT * FROM zomg) foo", sm.to_sql());
@@ -35,7 +35,7 @@ TEST_SUITE(select_manager, "select manager", {
     DESCRIBE("from", {
       IT("ignores strings when table of same name exists", {
         Table table = c_arel::Table("users");
-        SelectManager sm = SelectManager(NULL);
+        SelectManager sm = SelectManager();
 
         sm.from(table);
         sm.from("users");
@@ -46,9 +46,9 @@ TEST_SUITE(select_manager, "select manager", {
 
       IT("should support any ast", {
         Table table = c_arel::Table("users");
-        SelectManager manager1 = SelectManager(NULL);
+        SelectManager manager1 = SelectManager();
 
-        SelectManager manager2 = SelectManager(NULL);
+        SelectManager manager2 = SelectManager();
         manager2.project("*");
         manager2.from(table);
 
@@ -65,7 +65,7 @@ TEST_SUITE(select_manager, "select manager", {
         Table table = c_arel::Table("users");
         SelectManager manager = table.from(table);
         manager.having("foo");
-        assert_equal("SELECT FROM users HAVING \"foo\"", manager.to_sql());
+        assert_equal("SELECT FROM users HAVING 'foo'", manager.to_sql());
       })
 
       IT("can have multiple items specified separately", {
@@ -73,7 +73,7 @@ TEST_SUITE(select_manager, "select manager", {
         SelectManager manager = table.from(table);
         manager.having("foo");
         manager.having("bar");
-        assert_equal("SELECT FROM users HAVING \"foo\" AND \"bar\"", manager.to_sql());
+        assert_equal("SELECT FROM users HAVING 'foo' AND 'bar'", manager.to_sql());
       })
 
       IT("can have an array of items specified", {
@@ -83,7 +83,7 @@ TEST_SUITE(select_manager, "select manager", {
         haves.push_back("foo");
         haves.push_back("bar");
         manager.having(haves);
-        assert_equal("SELECT FROM users HAVING \"foo\" AND \"bar\"", manager.to_sql());
+        assert_equal("SELECT FROM users HAVING 'foo' AND 'bar'", manager.to_sql());
       })
     })
 
@@ -93,7 +93,7 @@ TEST_SUITE(select_manager, "select manager", {
         nodes::TableAlias right = table.alias();
         SelectManager manager = table.from(table);
         manager.join(right).on("omg");
-        assert_equal("SELECT FROM users INNER JOIN users users_2 ON \"omg\"", manager.to_sql());
+        assert_equal("SELECT FROM users INNER JOIN users users_2 ON 'omg'", manager.to_sql());
       })
 
       IT("does not convert strings to SQLLiterals", {
@@ -104,7 +104,7 @@ TEST_SUITE(select_manager, "select manager", {
         ons.push_back("foo");
         ons.push_back("bar");
         manager.join(right).on(ons);
-        assert_equal("SELECT FROM users INNER JOIN users users_2 ON \"foo\" AND \"bar\"", manager.to_sql());
+        assert_equal("SELECT FROM users INNER JOIN users users_2 ON 'foo' AND 'bar'", manager.to_sql());
       })
     })
   }) // backwards compatibility
@@ -138,7 +138,7 @@ TEST_SUITE(select_manager, "select manager", {
       manager.offset(10);
       assert_equal("SELECT FROM users OFFSET 10", manager.to_sql());
 
-      manager.offset(NULL);
+      manager.offset(0);
       assert_equal("SELECT FROM users", manager.to_sql());
     })
 
@@ -155,7 +155,7 @@ TEST_SUITE(select_manager, "select manager", {
       Table table = c_arel::Table("users");
       SelectManager manager = table.from(table);
       manager.project("*");
-      SelectManager m2 = SelectManager(NULL);
+      SelectManager m2 = SelectManager();
       m2.project(manager.exists());
 
       char tmp[1024];
@@ -167,7 +167,7 @@ TEST_SUITE(select_manager, "select manager", {
       Table table = c_arel::Table("users");
       SelectManager manager = table.from(table);
       manager.project("*");
-      SelectManager m2 = SelectManager(NULL);
+      SelectManager m2 = SelectManager();
       m2.project(manager.exists().as("foo"));
 
       char tmp[1024];
@@ -239,7 +239,7 @@ TEST_SUITE(select_manager, "select manager", {
       Table replies = c_arel::Table("replies");
       Attribute replies_id = replies["id"];
 
-      SelectManager recursive_term = SelectManager(NULL);
+      SelectManager recursive_term = SelectManager();
       /*
       recursive_term.from(comments).project(comments_id, comments_parent_id).where(comments_id.eq 42)
 

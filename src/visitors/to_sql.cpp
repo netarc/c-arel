@@ -9,6 +9,8 @@
 #include <sstream>
 
 namespace c_arel {
+  extern Connection _base_connection;
+
   // TODO: lame method lookup/rtii - probably could be cleaned up...
   method_dict_map_t ToSql::_to_sql_method_lookup;
   method_dict_map_t & ToSql::method_dictionary(void) {
@@ -85,8 +87,8 @@ namespace c_arel {
     return _to_sql_method_lookup;
   }
 
-  ToSql::ToSql(variant connection) {
-    this->connection = connection;
+  ToSql::ToSql(Connection *connection) {
+    this->connection = connection ? connection : &_base_connection;
     this->last_column = "";
   }
 
@@ -621,6 +623,7 @@ namespace c_arel {
   }
 
   std::string ToSql::quote(variant value, variant column) {
+    // TODO: most/all this logic should move to the connection?
     if (!value) {
       return "NULL";
     }
@@ -639,25 +642,20 @@ namespace c_arel {
     else if (value.isType<nodes::SqlLiteral>())
       value = static_cast<nodes::SqlLiteral *>(*value)->value;
 
-    // return format_string("\"%s\"", value.toString());
-    return !connection ? format_string("\"%s\"", value.toString()) :
-                          static_cast<Connection *>(*connection)->quote(value);
+    return connection->quote(value.toString());
   }
 
   std::string ToSql::quote_table_name(variant name) {
-    // TODO: Fixme, I crash
-    // if (name.isType<nodes::SqlLiteral>())
-    //   return name;
+    if (name.isType<nodes::SqlLiteral>())
+      return static_cast<nodes::SqlLiteral *>(*name)->value.toString();
 
-    return !connection ? quote_column_name(name) :
-                          static_cast<Connection *>(*connection)->quote_table_name(name);
+    return connection->quote_table_name(name.toString());
   }
 
   std::string ToSql::quote_column_name(variant name) {
     if (name.isType<nodes::SqlLiteral>())
       name = static_cast<nodes::SqlLiteral *>(*name)->value;
 
-    return !connection ? gsub_string(name.toString(), "\"", "\"\"") :
-                          static_cast<Connection *>(*connection)->quote_column_name(name);
+    return connection->quote_column_name(name.toString());
   }
 }
