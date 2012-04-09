@@ -13,7 +13,7 @@ namespace c_arel {
   }
 
   std::string Connection::quote_column_name(std::string name) {
-    return name;
+    return format_string("\"%s\"", name.c_str());
   }
 
   std::string Connection::quote(std::string value, variant column) {

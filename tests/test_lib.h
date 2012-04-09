@@ -84,8 +84,8 @@ void __test_assert_true(const char *file, int line, bool value, const char *mess
 #define assert_true(...) _macro_assert_true(__VA_ARGS__)(__VA_ARGS__)
 
 // ASSERT_EQUAL
-void __test_assert_equal(const char *file, int line, int expected, int value, const char *message);
-void __test_assert_equal(const char *file, int line, const char *expected, const char *value, const char *message);
+void __test_assert_equal(const char *file, int line, int value, int expected, const char *message);
+void __test_assert_equal(const char *file, int line, const char *value, const char *expected, const char *message);
 #define test_assert_equal(expected, value)                        __test_assert_equal(__FILE__, __LINE__, expected, value, NULL)
 #define test_assert_equal_with_message(expected, value, message)  __test_assert_equal(__FILE__, __LINE__, expected, value, message)
 #define macro_assert_equal(...) MACRO_ARG_MATCH(__VA_ARGS__, test_assert_equal_with_message, test_assert_equal, test_assert_equal, )

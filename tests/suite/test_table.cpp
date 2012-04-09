@@ -7,7 +7,7 @@ TEST_SUITE(table, "table", {
     IT("should add an offset", {
       Table relation = c_arel::Table("users");
       SelectManager sm = relation.skip(2);
-      assert_equal(sm.to_sql(), "SELECT FROM users OFFSET 2");
+      assert_equal(sm.to_sql(), "SELECT FROM \"users\" OFFSET 2");
     })
   })
 
@@ -15,7 +15,7 @@ TEST_SUITE(table, "table", {
     IT("adds a having caluse", {
       Table relation = c_arel::Table("users");
       SelectManager sm = relation.having(relation["id"].equal(10));
-      assert_equal(sm.to_sql(), "SELECT FROM users HAVING users.id = 10");
+      assert_equal(sm.to_sql(), "SELECT FROM \"users\" HAVING \"users\".\"id\" = 10");
     })
   })
 
@@ -23,7 +23,7 @@ TEST_SUITE(table, "table", {
     IT("join noops on null", {
       Table relation = c_arel::Table("users");
       SelectManager sm = relation.join(NULL);
-      assert_equal(sm.to_sql(), "SELECT FROM users");
+      assert_equal(sm.to_sql(), "SELECT FROM \"users\"");
     })
 
     IT("takes a second argument for join type", {
@@ -31,7 +31,7 @@ TEST_SUITE(table, "table", {
       nodes::TableAlias right = relation.alias();
       nodes::Equality predicate = relation["id"].equal(right["id"]);
       SelectManager mgr = relation.join<nodes::OuterJoin>(right).on(predicate);
-      assert_equal(mgr.to_sql(), "SELECT FROM users LEFT OUTER JOIN users users_2 ON users.id = users_2.id");
+      assert_equal(mgr.to_sql(), "SELECT FROM \"users\" LEFT OUTER JOIN \"users\" \"users_2\" ON \"users\".\"id\" = \"users_2\".\"id\"");
     })
   })
 
@@ -39,7 +39,7 @@ TEST_SUITE(table, "table", {
     IT("should create a group", {
       Table relation = c_arel::Table("users");
       SelectManager mgr = relation.group(relation["id"]);
-      assert_equal(mgr.to_sql(), "SELECT FROM users GROUP BY users.id");
+      assert_equal(mgr.to_sql(), "SELECT FROM \"users\" GROUP BY \"users\".\"id\"");
     })
   })
 
@@ -47,7 +47,7 @@ TEST_SUITE(table, "table", {
     IT("should take an order", {
       Table relation = c_arel::Table("users");
       SelectManager mgr = relation.order(c_arel::nodes::SqlLiteral("foo"));
-      assert_equal(mgr.to_sql(), "SELECT FROM users ORDER BY foo");
+      assert_equal(mgr.to_sql(), "SELECT FROM \"users\" ORDER BY foo");
     })
   })
 
@@ -55,7 +55,7 @@ TEST_SUITE(table, "table", {
     IT("should add a limit", {
       Table relation = c_arel::Table("users");
       SelectManager mgr = relation.take(1).project("*");
-      assert_equal(mgr.to_sql(), "SELECT * FROM users LIMIT 1");
+      assert_equal(mgr.to_sql(), "SELECT * FROM \"users\" LIMIT 1");
     })
   })
 
@@ -63,7 +63,7 @@ TEST_SUITE(table, "table", {
     IT("can project", {
       Table relation = c_arel::Table("users");
       SelectManager mgr = relation.project(nodes::SqlLiteral("*"));
-      assert_equal(mgr.to_sql(), "SELECT * FROM users");
+      assert_equal(mgr.to_sql(), "SELECT * FROM \"users\"");
     })
 
     IT("takes an array of parameters", {
@@ -72,7 +72,7 @@ TEST_SUITE(table, "table", {
       list.push_back(nodes::SqlLiteral("*"));
       list.push_back(nodes::SqlLiteral("*"));
       SelectManager mgr = relation.project(list);
-      assert_equal(mgr.to_sql(), "SELECT *, * FROM users");
+      assert_equal(mgr.to_sql(), "SELECT *, * FROM \"users\"");
     })
   })
 
@@ -81,7 +81,7 @@ TEST_SUITE(table, "table", {
       Table relation = c_arel::Table("users");
       SelectManager mgr = relation.where(relation["id"].equal(1));
       mgr.project(relation["id"]);
-      assert_equal(mgr.to_sql(), "SELECT users.id FROM users WHERE users.id = 1");
+      assert_equal(mgr.to_sql(), "SELECT \"users\".\"id\" FROM \"users\" WHERE \"users\".\"id\" = 1");
     })
   })
 
