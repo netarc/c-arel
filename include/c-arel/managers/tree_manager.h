@@ -11,19 +11,19 @@
 namespace c_arel {
   class TreeManager {
   public:
-    explicit TreeManager(variant engine);
+    explicit TreeManager(Connection *connection=NULL);
     ~TreeManager();
 
     Visitor *visitor(void);
     const char * to_sql(void);
 
     virtual TreeManager & where(variant expression);
-    
+
     // inheritance/rtii support
     virtual variant self(void) { return *this; }
 
   public:
-    variant     engine;
+    Connection  *connection;
     variant     ast;
   protected:
     variant     ctx;

@@ -15,8 +15,8 @@ namespace c_arel {
 
   class SelectManager : public TreeManager {
   public:
-    explicit SelectManager(variant engine);
-    explicit SelectManager(variant engine, Table &table);
+    explicit SelectManager(Connection *connection=NULL);
+    explicit SelectManager(Connection *connection, Table &table);
 
     SelectManager & where(variant expression);
 
@@ -24,7 +24,7 @@ namespace c_arel {
     SelectManager & with(variant subquery);
     SelectManager & with_recursive(std::vector<variant> subqueries);
     SelectManager & with_recursive(variant subquery);
-    
+
     int offset(void);
     int skip(void);
     int take(void);
@@ -34,7 +34,7 @@ namespace c_arel {
     nodes::TableAlias as(const char *other);
     SelectManager & on(variant exprs);
     SelectManager & group(std::vector<variant> columns);
-    SelectManager & group(variant column);    
+    SelectManager & group(variant column);
     SelectManager & having(variant exprs);
     SelectManager & project(variant projection);
     SelectManager & distinct(bool value);
@@ -47,11 +47,11 @@ namespace c_arel {
     SelectManager & join(variant relation) {
       if (!relation)
         return *this;
-      
+
       nodes::SelectCore *select_core = static_cast<nodes::SelectCore *>(*this->ctx);
       nodes::JoinSource *join_source = static_cast<nodes::JoinSource *>(*select_core->source);
       std::vector<variant> *join_source_right = static_cast<std::vector<variant> *>(*join_source->right);
-      
+
       if (relation.isString()) {
         join_source_right->push_back(nodes::StringJoin(relation, NULL));
       }
@@ -63,7 +63,7 @@ namespace c_arel {
       }
       return *this;
     }
-    
+
     nodes::Except minus(SelectManager other);
     nodes::Except except(SelectManager other);
     nodes::Intersect intersect(SelectManager other);
@@ -71,7 +71,7 @@ namespace c_arel {
     nodes::UnionAll union_all(SelectManager other);
 
     nodes::Exists exists(void);
-    
+
     // inheritance/rtii support
     virtual variant self(void) { return *this; }
   private:

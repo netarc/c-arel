@@ -13,7 +13,8 @@ namespace c_arel {
   public:
     virtual std::string quote_table_name(std::string name);
     virtual std::string quote_column_name(std::string name);
-    virtual std::string quote(std::string name);
+    virtual std::string quote(std::string value, variant column=NULL);
+    virtual std::string quote_string(std::string value);
   };
 }
 

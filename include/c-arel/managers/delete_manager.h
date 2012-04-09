@@ -11,8 +11,8 @@
 namespace c_arel {
   class DeleteManager : public TreeManager {
   public:
-    explicit DeleteManager(variant engine);
-    explicit DeleteManager(variant engine, Table &table);
+    explicit DeleteManager(Connection *connection=NULL);
+    explicit DeleteManager(Connection *connection, Table &table);
 
     DeleteManager & from(variant relation);
     DeleteManager & where(variant expression);

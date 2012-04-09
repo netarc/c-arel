@@ -4,32 +4,31 @@
  * This file is part of c-arel, distributed under the MIT-LICENSE.
  * For full terms see the included MIT-LICENSE file.
  */
- 
+
 #ifndef include_c_arel_table_h
 #define include_c_arel_table_h
 namespace c_arel {
   class Table : virtual  public Derived {
   public:
-    Table(const char *name);
-    Table(const char *name, variant engine);
-     
+    Table(const char *name, Connection *connection=NULL);
+
     SelectManager from(Table &table);
-    
+
     nodes::TableAlias alias();
     nodes::TableAlias alias(std::string name);
-    
+
     SelectManager join(variant relation);
     template<typename T>
     SelectManager join(variant relation) {
       return from(*this).join<T>(relation);
     }
-     
+
     SelectManager group(std::vector<variant> columns);
     SelectManager group(variant column);
     SelectManager order(variant exprs);
     SelectManager where(variant condition);
     SelectManager project(variant condition);
-    
+
     SelectManager take(int amount);
     SelectManager skip(int amount);
 
@@ -45,7 +44,7 @@ namespace c_arel {
     variant               table_alias;
     std::vector<variant>  aliases;
 
-    void *engine;
+    Connection *connection;
     std::string name;
   };
 }

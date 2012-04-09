@@ -9,8 +9,8 @@
 
 
 namespace c_arel {
-  TreeManager::TreeManager(variant engine) {
-    this->engine = engine;
+  TreeManager::TreeManager(Connection *connection) {
+    this->connection = connection;
     this->ast = NULL;
     this->ctx = NULL;
   }
@@ -19,10 +19,6 @@ namespace c_arel {
   }
 
   Visitor *TreeManager::visitor(void) {
-//    engine.connection.visitor
-    variant connection = NULL;
-    if (!!this->engine)
-      connection = static_cast<Engine *>(*this->engine)->connection();
     return new ToSql(connection);
   }
 

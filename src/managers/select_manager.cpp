@@ -8,33 +8,33 @@
 #include "c-arel.h"
 
 namespace c_arel {
-  SelectManager::SelectManager(variant engine) : TreeManager(engine) {
+  SelectManager::SelectManager(Connection *connection) : TreeManager(connection) {
     this->ast = nodes::SelectStatement();
     this->ctx = ((nodes::SelectStatement)this->ast).cores.back();
   }
 
-  SelectManager::SelectManager(variant engine, Table &table) : TreeManager(engine) {
+  SelectManager::SelectManager(Connection *connection, Table &table) : TreeManager(connection) {
     this->ast = nodes::SelectStatement();
     this->ctx = ((nodes::SelectStatement)this->ast).cores.back();
     this->from(table);
   }
-  
+
   SelectManager & SelectManager::where(variant expression) {
     if (expression.isType<TreeManager *>() || expression.isType<TreeManager>())
       expression = ((TreeManager *)expression)->ast;
-    
+
     nodes::SelectCore *node = (nodes::SelectCore *)*this->ctx;
     node->wheres.push_back(expression);
-    
+
     return *this;
   }
-  
+
   SelectManager & SelectManager::with(std::vector<variant> subqueries) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
     select_statement->with = nodes::With(subqueries);
     return *this;
   }
-  
+
   SelectManager & SelectManager::with(variant subquery) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
     std::vector<variant> a;
@@ -42,13 +42,13 @@ namespace c_arel {
     select_statement->with = nodes::With(a);
     return *this;
   }
-  
+
   SelectManager & SelectManager::with_recursive(std::vector<variant> subqueries) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
     select_statement->with = nodes::WithRecursive(subqueries);
     return *this;
   }
-  
+
   SelectManager & SelectManager::with_recursive(variant subquery) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
     std::vector<variant> a;
@@ -74,7 +74,7 @@ namespace c_arel {
   SelectManager & SelectManager::offset(int amount) {
     return skip(amount);
   }
-  
+
   SelectManager & SelectManager::skip(int amount) {
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
     if (amount)
@@ -97,7 +97,7 @@ namespace c_arel {
     }
     return *this;
   }
-  
+
   nodes::TableAlias SelectManager::as(const char *other) {
     return nodes::TableAlias(nodes::Grouping(this->ast), nodes::SqlLiteral(other));
   }
@@ -132,7 +132,7 @@ namespace c_arel {
     select_core->having = nodes::Having(collapse(exprs, select_core->having));
     return *this;
   }
-  
+
   SelectManager& SelectManager::project(variant projection) {
     // FIXME: converting these to SQLLiterals is probably not good
     nodes::SelectCore *select_core = (nodes::SelectCore *)*this->ctx;
@@ -144,7 +144,7 @@ namespace c_arel {
     }
     return *this;
   }
-  
+
   SelectManager& SelectManager::distinct(bool value) {
     nodes::SelectCore *select_core = (nodes::SelectCore *)*this->ctx;
     if (value)
@@ -153,7 +153,7 @@ namespace c_arel {
       select_core->set_quantifier = NULL;
     return *this;
   }
-  
+
   SelectManager& SelectManager::order(variant exprs) {
     if (!exprs.isType<std::vector<variant> >()) {
       std::vector<variant> a;
@@ -163,15 +163,15 @@ namespace c_arel {
 
     std::vector<variant> a = exprs;
     nodes::SelectStatement *select_statement = (nodes::SelectStatement *)*this->ast;
-    
+
     select_statement->orders.insert(select_statement->orders.end(), a.begin(), a.end());
     return *this;
   }
-  
+
   SelectManager& SelectManager::from(variant table) {
     if (table.isString())
       table = nodes::SqlLiteral(table.toString());
-    
+
     nodes::SelectCore *select_core = (nodes::SelectCore *)*this->ctx;
     nodes::Binary *node_binary = (nodes::Binary *)*select_core->source;
 
@@ -184,14 +184,14 @@ namespace c_arel {
     } else {
       node_binary->left = table;
     }
-    
+
     return *this;
   }
-  
+
   SelectManager& SelectManager::join(variant relation) {
     return join<nodes::InnerJoin>(relation);
   }
-  
+
   //  template<typename T>
   //  SelectManager& SelectManager::join(variant relation) {
   //    if (!relation)
@@ -200,7 +200,7 @@ namespace c_arel {
   //    nodes::SelectCore *select_core = static_cast<nodes::SelectCore *>(*this->ctx);
   //    nodes::JoinSource *join_source = static_cast<nodes::JoinSource *>(*select_core->source);
   //    std::vector<variant> *join_source_right = static_cast<std::vector<variant> *>(*join_source->right);
-  //    
+  //
   //    if (relation.isString()) {
   //      join_source_right->push_back(nodes::StringJoin(relation, NULL));
   //    }
@@ -212,7 +212,7 @@ namespace c_arel {
   //    }
   //    return *this;
   //  }
-  
+
   nodes::Except SelectManager::minus(SelectManager other) {
     return except(other);
   }
@@ -220,31 +220,31 @@ namespace c_arel {
   nodes::Except SelectManager::except(SelectManager other) {
     return nodes::Except(ast, other.ast);
   }
-  
+
   nodes::Intersect SelectManager::intersect(SelectManager other) {
     return nodes::Intersect(ast, other.ast);
   }
-  
+
   nodes::Union SelectManager::union_with(SelectManager other) {
     return nodes::Union(ast, other.ast);
   }
-  
+
   nodes::UnionAll SelectManager::union_all(SelectManager other) {
     return nodes::UnionAll(ast, other.ast);
   }
-  
+
   // Private
   variant SelectManager::collapse(variant exprs) {
     return collapse(exprs, NULL);
   }
-  
+
   variant SelectManager::collapse(variant exprs, variant existing) {
     if (!exprs.isType<std::vector<variant> >()) {
       std::vector<variant> a;
       a.push_back(exprs);
       exprs = a;
     }
-    
+
     std::vector<variant> a = exprs;
     if (!!existing) {
       std::vector<variant> new_a;
@@ -261,7 +261,7 @@ namespace c_arel {
     else
       return nodes::And(a);
   }
-  
+
   nodes::Exists SelectManager::exists(void) {
     return nodes::Exists(ast);
   }

@@ -8,12 +8,12 @@
 #include "c-arel.h"
 
 namespace c_arel {
-  DeleteManager::DeleteManager(variant engine) : TreeManager(engine) {
+  DeleteManager::DeleteManager(Connection *connection) : TreeManager(connection) {
     this->ast = nodes::DeleteStatement();
     this->ctx = this->ast;
   }
-  
-  DeleteManager::DeleteManager(variant engine, Table &table) : TreeManager(engine) {
+
+  DeleteManager::DeleteManager(Connection *connection, Table &table) : TreeManager(connection) {
     this->ast = nodes::DeleteStatement();
     this->ctx = this->ast;
     this->from(table);
@@ -24,14 +24,14 @@ namespace c_arel {
     delete_statement->left = relation;
     return *this;
   }
-  
+
   DeleteManager & DeleteManager::where(variant expression) {
     if (expression.isType<TreeManager *>() || expression.isType<TreeManager>())
       expression = ((TreeManager *)expression)->ast;
 
     nodes::DeleteStatement *node = (nodes::DeleteStatement *)*this->ctx;
     node->wheres().push_back(expression);
-    
+
     return *this;
   }
 }

@@ -11,9 +11,9 @@
 namespace c_arel {
   class UpdateManager : public TreeManager {
   public:
-    explicit UpdateManager(variant engine);
-    explicit UpdateManager(variant engine, Table &table);
-    
+    explicit UpdateManager(Connection *connection=NULL);
+    explicit UpdateManager(Connection *connection, Table &table);
+
     UpdateManager & table(Table &table);
     UpdateManager & set(variant values);
     UpdateManager & take(variant limit);

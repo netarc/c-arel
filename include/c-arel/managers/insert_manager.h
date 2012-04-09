@@ -11,13 +11,13 @@
 namespace c_arel {
   class InsertManager : public TreeManager {
   public:
-    explicit InsertManager(variant engine);
-    explicit InsertManager(variant engine, Table &table);
-    
+    explicit InsertManager(Connection *connection=NULL);
+    explicit InsertManager(Connection *connection, Table &table);
+
     InsertManager & into(Table &table);
     InsertManager & insert(std::vector<variant> fields);
     nodes::Values create_values(std::vector<variant> values, std::vector<variant> columns);
-    
+
     // inheritance/rtii support
     virtual variant self(void) { return *this; }
   };

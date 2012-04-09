@@ -243,14 +243,14 @@ TEST_SUITE(select_manager, "select manager", {
       /*
       recursive_term.from(comments).project(comments_id, comments_parent_id).where(comments_id.eq 42)
 
-        non_recursive_term = Arel::SelectManager.new Table.engine
+        non_recursive_term = Arel::SelectManager.new Table.connection
         non_recursive_term.from(comments).project(comments_id, comments_parent_id).join(replies).on(comments_parent_id.eq replies_id)
 
         union = recursive_term.union(non_recursive_term)
 
         as_statement = Arel::Nodes::As.new replies, union
 
-        manager = Arel::SelectManager.new Table.engine
+        manager = Arel::SelectManager.new Table.connection
         manager.with(:recursive, as_statement).from(replies).project(Arel.star)
 
         sql = manager.to_sql

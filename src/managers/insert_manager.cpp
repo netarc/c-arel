@@ -8,21 +8,21 @@
 #include "c-arel.h"
 
 namespace c_arel {
-  InsertManager::InsertManager(variant engine) : TreeManager(engine) {
+  InsertManager::InsertManager(Connection *connection) : TreeManager(connection) {
     this->ast = nodes::InsertStatement();
   }
-  
-  InsertManager::InsertManager(variant engine, Table &table) : TreeManager(engine) {
+
+  InsertManager::InsertManager(Connection *connection, Table &table) : TreeManager(connection) {
     this->ast = nodes::InsertStatement();
     this->into(table);
   }
-  
+
   InsertManager & InsertManager::into(Table &table) {
     nodes::InsertStatement *insert_statement = (nodes::InsertStatement *)*this->ast;
     insert_statement->relation = table;
     return *this;
   }
-  
+
   InsertManager & InsertManager::insert(std::vector<variant> fields) {
     if (fields.empty())
       return *this;
@@ -41,19 +41,19 @@ namespace c_arel {
 
       insert_statement->relation = static_cast<Attribute *>(*f)->relation;
     }
-    
+
     std::vector<variant> values;
     for (std::vector<variant>::iterator it=fields.begin(); it!=fields.end(); ++it) {
       std::vector<variant> *v = static_cast<std::vector<variant> *>(**it);
       insert_statement->columns.push_back(v->at(0));
       values.push_back(v->at(1));
     }
-    
+
     insert_statement->values = create_values(values, insert_statement->columns);
-    
+
     return *this;
   }
-  
+
   nodes::Values InsertManager::create_values(std::vector<variant> values, std::vector<variant> columns) {
     return nodes::Values(values, columns);
   }
