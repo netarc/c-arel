@@ -6,6 +6,7 @@
  */
 
 #include "c-arel.h"
+#include <sstream>
 
 namespace c_arel {
   std::vector<variant> zip_vector(std::vector<variant> src, std::vector<variant> target) {
@@ -49,16 +50,16 @@ namespace c_arel {
 
   std::string gsub_string(const std::string &sData, const std::string &sFrom, const std::string &sTo) {
     std::string sNew = sData;
-    
+
     if (!sNew.empty()) {
       std::string::size_type toLen = sTo.length();
       std::string::size_type frLen = sFrom.length();
       std:: string::size_type loc = 0;
-      
+
       while (std::string::npos != (loc = sNew.find(sFrom, loc))) {
         sNew.replace(loc, frLen, sTo);
         loc += toLen;
-        
+
         if (loc >= sNew.length())
           break;
       }
@@ -67,6 +68,29 @@ namespace c_arel {
   }
 
   nodes::SqlLiteral raw_sql(const char *sql) {
-    return nodes::SqlLiteral(sql); 
+    return nodes::SqlLiteral(sql);
+  }
+
+  // TODO: Better way to convert from numbers?
+  std::string number_variant_to_string(variant &value) {
+    std::stringstream stream;
+
+    if (value.isType<int>())
+      stream << (int)value;
+    else if (value.isType<unsigned int>())
+      stream << (unsigned int)value;
+    else if (value.isType<short>())
+      stream << (short)value;
+    else if (value.isType<unsigned short>())
+      stream << (unsigned short)value;
+    else if (value.isType<long>())
+      stream << (long)value;
+    else if (value.isType<unsigned long>())
+      stream << (unsigned long)value;
+    else if (value.isType<long long>())
+      stream << (long long)value;
+    else if (value.isType<unsigned long long>())
+      stream << (unsigned long long)value;
+    return stream.str();
   }
 }

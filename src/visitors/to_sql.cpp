@@ -6,7 +6,6 @@
  */
 
 #include "c-arel.h"
-#include <sstream>
 
 namespace c_arel {
   extern Connection _base_connection;
@@ -624,6 +623,12 @@ namespace c_arel {
 
   std::string ToSql::quote(variant value, variant column) {
     // TODO: most/all this logic should move to the connection?
+
+    // TODO: Better way to convert from numbers?
+    std::string as_number = number_variant_to_string(value);
+    if (as_number.size() != 0)
+      return as_number;
+
     if (!value) {
       return "NULL";
     }
@@ -632,12 +637,6 @@ namespace c_arel {
         return "TRUE";
       else
         return "FALSE";
-    }
-    // TODO: Better way to convert from numbers?
-    else if (value.isType<int>()) {
-      std::stringstream stream;
-      stream << (int)value;
-      return stream.str();
     }
     else if (value.isType<nodes::SqlLiteral>())
       value = static_cast<nodes::SqlLiteral *>(*value)->value;
