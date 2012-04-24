@@ -75,22 +75,37 @@ namespace c_arel {
   std::string number_variant_to_string(variant &value) {
     std::stringstream stream;
 
-    if (value.isType<int>())
-      stream << (int)value;
-    else if (value.isType<unsigned int>())
-      stream << (unsigned int)value;
+    // CHAR
+    if (value.isType<char>())
+      stream << (char)value;
+    else if (value.isType<unsigned char>())
+      stream << (unsigned char)value;
+    // SHORT
     else if (value.isType<short>())
       stream << (short)value;
     else if (value.isType<unsigned short>())
       stream << (unsigned short)value;
+    // INT
+    if (value.isType<int>())
+      stream << (int)value;
+    else if (value.isType<unsigned int>())
+      stream << (unsigned int)value;
+    // LONG
     else if (value.isType<long>())
       stream << (long)value;
     else if (value.isType<unsigned long>())
       stream << (unsigned long)value;
+    // LONG LONG
     else if (value.isType<long long>())
       stream << (long long)value;
     else if (value.isType<unsigned long long>())
       stream << (unsigned long long)value;
+    // FLOAT
+    else if (value.isType<float>())
+      stream << (float)value;
+    // DOUBLE
+    else if (value.isType<double>())
+      stream << (double)value;
     return stream.str();
   }
 }
