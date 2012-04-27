@@ -86,7 +86,7 @@ namespace c_arel {
     else if (value.isType<unsigned short>())
       stream << (unsigned short)value;
     // INT
-    if (value.isType<int>())
+    else if (value.isType<int>())
       stream << (int)value;
     else if (value.isType<unsigned int>())
       stream << (unsigned int)value;
