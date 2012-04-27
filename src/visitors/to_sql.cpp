@@ -624,21 +624,22 @@ namespace c_arel {
   std::string ToSql::quote(variant value, variant column) {
     // TODO: most/all this logic should move to the connection?
 
+    if (!value) {
+      return "NULL";
+    }
+
     // TODO: Better way to convert from numbers?
     std::string as_number = number_variant_to_string(value);
     if (as_number.size() != 0)
       return as_number;
 
-    if (!value) {
-      return "NULL";
-    }
-    else if (value.isType<bool>()) {
+    if (value.isType<bool>()) {
       if ((bool)value)
         return "TRUE";
       else
         return "FALSE";
     }
-    else if (value.isType<nodes::SqlLiteral>())
+    if (value.isType<nodes::SqlLiteral>())
       value = static_cast<nodes::SqlLiteral *>(*value)->value;
 
     return connection->quote(value.toString());
