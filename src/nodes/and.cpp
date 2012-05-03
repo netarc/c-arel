@@ -13,13 +13,13 @@ namespace c_arel {
       if (!children.isType<std::vector<variant> >()) {
         this->children = std::vector<variant>();
         this->children.push_back(children);
-        this->children.push_back(NULL);
+        this->children.push_back(nullptr);
       }
       else {
         this->children = children;
       }
     }
-    
+
     And::And(variant children, variant right) {
       if (!children.isType<std::vector<variant> >()) {
         this->children = std::vector<variant>();
@@ -30,7 +30,7 @@ namespace c_arel {
         this->children = children;
       }
     }
-    
+
     const char * And::classname(void) {
       return "Arel::Nodes::And";
     }

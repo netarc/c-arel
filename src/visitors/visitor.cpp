@@ -11,28 +11,28 @@ namespace c_arel {
 
   class ClassMap {
   public:
-    
+
     template<typename T>
     static void declare(void) {
       _classes.push_back(typeid(T).name());
       _classes.push_back(typeid(T*).name());
     }
-    
+
     static bool is_recognized_classname(const char *cname) {
       return std::find(_classes.begin(), _classes.end(), cname) != _classes.end();
     }
-    
+
   protected:
     static std::vector<const char *> _classes;
   };
 
   std::vector<const char *> ClassMap::_classes;
-  
+
   static bool model_map = false;
   static void create_model_map(void) {
     if (model_map) return;
     model_map = true;
-    
+
     ClassMap::declare<Derived>();
     ClassMap::declare<Attribute>();
     ClassMap::declare<Table>();
@@ -109,9 +109,9 @@ namespace c_arel {
     ClassMap::declare<nodes::Addition>();
     ClassMap::declare<nodes::Subtraction>();
   }
-  
+
 //  template<typename T> std::vector<base_field*> model<T>::fields_;
-    
+
   // TODO: lame method lookup - probably could be cleaned up...
   method_dict_map_t Visitor::_visitor_method_lookup;
   method_dict_map_t & Visitor::method_dictionary(void) {
@@ -120,23 +120,23 @@ namespace c_arel {
     }
     return _visitor_method_lookup;
   }
-  
-  
+
+
   std::string Visitor::accept(variant & object) {
     return visit(object);
   }
-  
+
   std::string Visitor::visit(variant & object) {
     create_model_map();
-    
+
     Derived *base = (Derived *)*object;
     std::string classname;
-    
+
     if (!object) {
       printf("visit was empty!\n");
       return "";
     }
-    
+
     if (ClassMap::is_recognized_classname(object.type().name())) {
       classname = base->classname();
     } else {
@@ -154,7 +154,7 @@ namespace c_arel {
         return "";
       }
     }
-    
+
     method_dict_map_t method_dict_map = method_dictionary();
     if (method_dict_map[classname]) {
       return (this->*method_dict_map[classname])(object);

@@ -53,13 +53,13 @@ namespace c_arel {
       std::vector<variant> *join_source_right = static_cast<std::vector<variant> *>(*join_source->right);
 
       if (relation.isString()) {
-        join_source_right->push_back(nodes::StringJoin(relation, NULL));
+        join_source_right->push_back(nodes::StringJoin(relation, nullptr));
       }
       else if (relation.isType<nodes::SqlLiteral>()) {
-        join_source_right->push_back(nodes::StringJoin(relation, NULL));
+        join_source_right->push_back(nodes::StringJoin(relation, nullptr));
       }
       else {
-        join_source_right->push_back(T(relation, NULL));
+        join_source_right->push_back(T(relation, nullptr));
       }
       return *this;
     }

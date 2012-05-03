@@ -13,6 +13,8 @@
 #include <string>
 #include <map>
 
+#define nullptr ((void *)0)
+
 #include "../deps/variant/variant.hpp"
 #include "c-arel/util.h"
 #include "c-arel/derived.h"

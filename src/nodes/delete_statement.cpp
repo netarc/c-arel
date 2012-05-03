@@ -10,19 +10,19 @@
 
 namespace c_arel {
   namespace nodes {
-    DeleteStatement::DeleteStatement(void) : Binary(NULL, std::vector<variant>()) {
+    DeleteStatement::DeleteStatement(void) : Binary(nullptr, std::vector<variant>()) {
     }
-    
+
     DeleteStatement::DeleteStatement(variant relation) : Binary(relation, std::vector<variant>()) {
     }
-    
+
     DeleteStatement::DeleteStatement(variant relation, std::vector<variant> wheres) : Binary(relation, wheres) {
     }
-    
+
     variant & DeleteStatement::relation(void) {
       return left;
     }
-    
+
     std::vector<variant> & DeleteStatement::wheres(void) {
       std::vector<variant> *w = static_cast<std::vector<variant> *>(*right);
       return *w;

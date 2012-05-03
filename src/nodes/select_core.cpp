@@ -13,15 +13,15 @@ namespace c_arel {
     SelectCore::SelectCore(void) {
       source = JoinSource(NULL);
     }
-    
+
     variant & SelectCore::from(void) {
       return static_cast<JoinSource *>(*source)->left;
     }
-    
+
     void SelectCore::set_from(variant value) {
       static_cast<JoinSource *>(*source)->left = value;
     }
-    
+
     const char * SelectCore::classname(void) {
       return "Arel::Nodes::SelectCore";
     }

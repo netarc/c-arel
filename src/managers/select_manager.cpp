@@ -80,7 +80,7 @@ namespace c_arel {
     if (amount)
       select_statement->offset = nodes::Offset(amount);
     else
-      select_statement->offset = NULL;
+      select_statement->offset = nullptr;
     return *this;
   }
 
@@ -92,8 +92,8 @@ namespace c_arel {
       select_core->top = nodes::Top(limit);
     }
     else {
-      select_statement->limit = NULL;
-      select_core->top = NULL;
+      select_statement->limit = nullptr;
+      select_core->top = nullptr;
     }
     return *this;
   }
@@ -150,7 +150,7 @@ namespace c_arel {
     if (value)
       select_core->set_quantifier = nodes::Distinct();
     else
-      select_core->set_quantifier = NULL;
+      select_core->set_quantifier = nullptr;
     return *this;
   }
 
@@ -202,13 +202,13 @@ namespace c_arel {
   //    std::vector<variant> *join_source_right = static_cast<std::vector<variant> *>(*join_source->right);
   //
   //    if (relation.isString()) {
-  //      join_source_right->push_back(nodes::StringJoin(relation, NULL));
+  //      join_source_right->push_back(nodes::StringJoin(relation, nullptr));
   //    }
   //    else if (relation.isType<nodes::SqlLiteral>()) {
-  //      join_source_right->push_back(nodes::StringJoin(relation, NULL));
+  //      join_source_right->push_back(nodes::StringJoin(relation, nullptr));
   //    }
   //    else {
-  //      join_source_right->push_back(T(relation, NULL));
+  //      join_source_right->push_back(T(relation, nullptr));
   //    }
   //    return *this;
   //  }
@@ -235,7 +235,7 @@ namespace c_arel {
 
   // Private
   variant SelectManager::collapse(variant exprs) {
-    return collapse(exprs, NULL);
+    return collapse(exprs, nullptr);
   }
 
   variant SelectManager::collapse(variant exprs, variant existing) {

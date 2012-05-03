@@ -13,7 +13,7 @@ std::vector<_test_case *> __tests;
 std::vector<_test_case *> __failed_tests;
 
 _test_case *current_test_case(void) {
-  return __tests.back();  
+  return __tests.back();
 }
 
 void free_test_case(_test_case *tc) {
@@ -46,6 +46,7 @@ _test_case * __run_test(const char *description, std::vector<const char *> &stac
 
   char buf[1024];
   sprintf(buf, "\"%s %s\"", describe_stack(stack), description);
+  // printf("%s\n", buf);
   tc->name = strdup(buf);
 
   __tests.push_back(tc);

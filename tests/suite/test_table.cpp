@@ -22,7 +22,7 @@ TEST_SUITE(table, "table", {
   DESCRIBE("backwards compat", {
     IT("join noops on null", {
       Table relation = c_arel::Table("users");
-      SelectManager sm = relation.join(NULL);
+      SelectManager sm = relation.join(nullptr);
       assert_equal(sm.to_sql(), "SELECT FROM \"users\"");
     })
 

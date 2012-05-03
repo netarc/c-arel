@@ -11,8 +11,8 @@
 namespace c_arel {
   TreeManager::TreeManager(Connection *connection) {
     this->connection = connection;
-    this->ast = NULL;
-    this->ctx = NULL;
+    this->ast = nullptr;
+    this->ctx = nullptr;
   }
 
   TreeManager::~TreeManager(void) {
@@ -23,7 +23,7 @@ namespace c_arel {
   }
 
   const char * TreeManager::to_sql(void) {
-    return ToSql(NULL).accept(this->ast).c_str();
+    return ToSql(connection).accept(this->ast).c_str();
   }
 
   TreeManager & TreeManager::where(variant expr) {

@@ -28,10 +28,12 @@
 #include "test_lib.h"
 #include "test_helpers.h"
 
+DECLARE_SUITE(variant);
 DECLARE_SUITE(table);
 DECLARE_SUITE(select_manager);
 
 static test_suite suite_methods[]= {
+  SUITE_NAME(variant),
   SUITE_NAME(table),
   SUITE_NAME(select_manager)
 };
