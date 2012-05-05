@@ -76,8 +76,8 @@ namespace c_arel {
       _to_sql_method_lookup["Arel::Nodes::Subtraction"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_InfixOperation;
       _to_sql_method_lookup["Arel::Nodes::Multiplication"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_InfixOperation;
       _to_sql_method_lookup["Arel::Nodes::Division"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_InfixOperation;
-      _to_sql_method_lookup["Array"] = (visitor_method_t)&ToSql::array;
-      _to_sql_method_lookup["String"] = (visitor_method_t)&ToSql::quoted;
+      _to_sql_method_lookup["quoted"] = (visitor_method_t)&ToSql::quoted;
+      _to_sql_method_lookup["array"] = (visitor_method_t)&ToSql::array;
       _to_sql_method_lookup["literal"] = (visitor_method_t)&ToSql::literal;
 
 //      casted_visitor_method<nodes::SelectStatement *>((casted_visitor_method<nodes::SelectStatement *>::method_t)&ToSql::_visit_Arel_Nodes_SelectStatement);
@@ -546,16 +546,9 @@ namespace c_arel {
       if (as_number.size() != 0)
         return as_number;
 
-      if (o.isType<bool>()) {
-        if ((bool)o)
-          return "TRUE";
-        else
-          return "FALSE";
-      }
-      else {
-        printf("unsupported type: %s\n", o.type().name());
-        throw std::bad_cast();
-      }
+      printf("unsupported type: %s\n", o.type().name());
+      return "--bad literal--";
+      // throw std::bad_cast();
     }
   }
   /*
@@ -638,15 +631,14 @@ namespace c_arel {
     // TODO: Better way to convert from numbers?
     std::string as_number = number_variant_to_string(value);
     if (as_number.size() != 0)
-      return as_number;
-
-    if (value.isType<bool>()) {
+      value = as_number;
+    else if (value.isType<bool>()) {
       if ((bool)value)
-        return "TRUE";
+        value = "TRUE";
       else
-        return "FALSE";
+        value = "FALSE";
     }
-    if (value.isType<nodes::SqlLiteral>())
+    else if (value.isType<nodes::SqlLiteral>())
       value = static_cast<nodes::SqlLiteral *>(*value)->value;
 
     return connection->quote(value.toString());

@@ -140,10 +140,11 @@ namespace c_arel {
     if (ClassMap::is_recognized_classname(object.type().name())) {
       classname = base->classname();
     } else {
-      if (object.isString())
-        classname = "String";
-      else if (object.type() == typeid(std::vector<variant>))
-        classname = "Array";
+      if (object.isString() ||
+          object.isType<bool>())
+        classname = "quoted";
+      else if (object.isType<std::vector<variant> >())
+        classname = "array";
       else
         classname = "literal";
     }
