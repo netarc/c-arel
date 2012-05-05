@@ -143,16 +143,10 @@ namespace c_arel {
       if (object.type() == typeid(char *) ||
           object.type() == typeid(const char *))
         classname = "String";
-      else if (object.type() == typeid(int))
-        classname = "Integer";
-      else if (object.type() == typeid(float))
-        classname = "Float";
       else if (object.type() == typeid(std::vector<variant>))
         classname = "Array";
-      else {
-        printf("unsupported type: %s\n", object.type().name());
-        return "";
-      }
+      else
+        classname = "literal";
     }
 
     method_dict_map_t method_dict_map = method_dictionary();

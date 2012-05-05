@@ -78,8 +78,7 @@ namespace c_arel {
       _to_sql_method_lookup["Arel::Nodes::Division"] = (visitor_method_t)&ToSql::visit_Arel_Nodes_InfixOperation;
       _to_sql_method_lookup["Array"] = (visitor_method_t)&ToSql::array;
       _to_sql_method_lookup["String"] = (visitor_method_t)&ToSql::quoted;
-      _to_sql_method_lookup["Integer"] = (visitor_method_t)&ToSql::literal;
-      _to_sql_method_lookup["Float"] = (visitor_method_t)&ToSql::literal;
+      _to_sql_method_lookup["literal"] = (visitor_method_t)&ToSql::literal;
 
 //      casted_visitor_method<nodes::SelectStatement *>((casted_visitor_method<nodes::SelectStatement *>::method_t)&ToSql::_visit_Arel_Nodes_SelectStatement);
     }
@@ -541,14 +540,22 @@ namespace c_arel {
     if (o.isString()) {
       return o.toString();
     }
-    else if (o.isType<int>()) {
-      return format_string("%i", (int)o);
-    }
-    else if (o.isType<float>()) {
-      return format_string("%f", (float)o);
-    }
     else {
-      return "literal";
+      // TODO: Better way to convert from numbers?
+      std::string as_number = number_variant_to_string(o);
+      if (as_number.size() != 0)
+        return as_number;
+
+      if (o.isType<bool>()) {
+        if ((bool)o)
+          return "TRUE";
+        else
+          return "FALSE";
+      }
+      else {
+        printf("unsupported type: %s\n", o.type().name());
+        throw std::bad_cast();
+      }
     }
   }
   /*
