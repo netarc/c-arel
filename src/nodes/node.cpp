@@ -12,23 +12,23 @@ namespace c_arel {
     nodes::Not Node::Not(void) {
       return nodes::Not(self());
     }
-    
+
     nodes::Grouping Node::Or(variant right) {
       return nodes::Grouping(nodes::Or(self(), right));
     }
-    
+
     nodes::And Node::And(variant right) {
       std::vector<variant> children;
       children.push_back(self());
       children.push_back(right);
       return nodes::And(children);
     }
-    
-    const char * Node::to_sql(void) {
+
+    std::string Node::to_sql(void) {
       variant s = self();
-      return ToSql(NULL).accept(s).c_str();
+      return ToSql(NULL).accept(s);
     }
-  
+
     const char * Node::classname(void) {
       return "Arel::Nodes::Node";
     }

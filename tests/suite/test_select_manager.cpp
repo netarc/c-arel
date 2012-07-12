@@ -28,7 +28,7 @@ TEST_SUITE(select_manager, "select manager", {
         sm = SelectManager();
         sm.project("name");
         sm.from(as);
-        assert_equal("SELECT name FROM (SELECT * FROM zomg) foo", sm.to_sql());
+        assert_equal("SELECT name FROM (SELECT * FROM zomg) foo", sm.to_sql().c_str());
       })
     }) // as
 
@@ -41,7 +41,7 @@ TEST_SUITE(select_manager, "select manager", {
         sm.from("users");
         sm.project(table["id"]);
 
-        assert_equal("SELECT \"users\".\"id\" FROM users", sm.to_sql());
+        assert_equal("SELECT \"users\".\"id\" FROM users", sm.to_sql().c_str());
       })
 
       IT("should support any ast", {
@@ -56,7 +56,7 @@ TEST_SUITE(select_manager, "select manager", {
         nodes::TableAlias as = manager2.as("omg");
         manager1.from(as);
 
-        assert_equal("SELECT lol FROM (SELECT * FROM \"users\") omg", manager1.to_sql());
+        assert_equal("SELECT lol FROM (SELECT * FROM \"users\") omg", manager1.to_sql().c_str());
       })
     })
 
@@ -65,7 +65,7 @@ TEST_SUITE(select_manager, "select manager", {
         Table table = c_arel::Table("users");
         SelectManager manager = table.from(table);
         manager.having("foo");
-        assert_equal("SELECT FROM \"users\" HAVING 'foo'", manager.to_sql());
+        assert_equal("SELECT FROM \"users\" HAVING 'foo'", manager.to_sql().c_str());
       })
 
       IT("can have multiple items specified separately", {
@@ -73,7 +73,7 @@ TEST_SUITE(select_manager, "select manager", {
         SelectManager manager = table.from(table);
         manager.having("foo");
         manager.having("bar");
-        assert_equal("SELECT FROM \"users\" HAVING 'foo' AND 'bar'", manager.to_sql());
+        assert_equal("SELECT FROM \"users\" HAVING 'foo' AND 'bar'", manager.to_sql().c_str());
       })
 
       IT("can have an array of items specified", {
@@ -83,7 +83,7 @@ TEST_SUITE(select_manager, "select manager", {
         haves.push_back("foo");
         haves.push_back("bar");
         manager.having(haves);
-        assert_equal("SELECT FROM \"users\" HAVING 'foo' AND 'bar'", manager.to_sql());
+        assert_equal("SELECT FROM \"users\" HAVING 'foo' AND 'bar'", manager.to_sql().c_str());
       })
     })
 
@@ -93,7 +93,7 @@ TEST_SUITE(select_manager, "select manager", {
         nodes::TableAlias right = table.alias();
         SelectManager manager = table.from(table);
         manager.join(right).on("omg");
-        assert_equal("SELECT FROM \"users\" INNER JOIN \"users\" \"users_2\" ON 'omg'", manager.to_sql());
+        assert_equal("SELECT FROM \"users\" INNER JOIN \"users\" \"users_2\" ON 'omg'", manager.to_sql().c_str());
       })
 
       IT("does not convert strings to SQLLiterals", {
@@ -104,7 +104,7 @@ TEST_SUITE(select_manager, "select manager", {
         ons.push_back("foo");
         ons.push_back("bar");
         manager.join(right).on(ons);
-        assert_equal("SELECT FROM \"users\" INNER JOIN \"users\" \"users_2\" ON 'foo' AND 'bar'", manager.to_sql());
+        assert_equal("SELECT FROM \"users\" INNER JOIN \"users\" \"users_2\" ON 'foo' AND 'bar'", manager.to_sql().c_str());
       })
     })
   }) // backwards compatibility
@@ -115,12 +115,12 @@ TEST_SUITE(select_manager, "select manager", {
       Table table = c_arel::Table("users");
       SelectManager manager = table.from(table);
       manager.skip(10);
-      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql());
+      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql().c_str());
     })
 
     IT("should chain", {
       Table table = c_arel::Table("users");
-      assert_equal("SELECT FROM \"users\" OFFSET 10", table.from(table).skip(10).to_sql());
+      assert_equal("SELECT FROM \"users\" OFFSET 10", table.from(table).skip(10).to_sql().c_str());
     })
   })
 
@@ -129,17 +129,17 @@ TEST_SUITE(select_manager, "select manager", {
       Table table = c_arel::Table("users");
       SelectManager manager = table.from(table);
       manager.offset(10);
-      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql());
+      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql().c_str());
     })
 
     IT("should remove an offset", {
       Table table = c_arel::Table("users");
       SelectManager manager = table.from(table);
       manager.offset(10);
-      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql());
+      assert_equal("SELECT FROM \"users\" OFFSET 10", manager.to_sql().c_str());
 
       manager.offset(0);
-      assert_equal("SELECT FROM \"users\"", manager.to_sql());
+      assert_equal("SELECT FROM \"users\"", manager.to_sql().c_str());
     })
 
     IT("should return the offset", {
@@ -159,8 +159,8 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project(manager.exists());
 
       char tmp[1024];
-      sprintf(tmp, "SELECT EXISTS (%s)", manager.to_sql());
-      assert_equal(tmp, m2.to_sql());
+      sprintf(tmp, "SELECT EXISTS (%s)", manager.to_sql().c_str());
+      assert_equal(tmp, m2.to_sql().c_str());
     })
 
     IT("can be aliased", {
@@ -171,8 +171,8 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project(manager.exists().as("foo"));
 
       char tmp[1024];
-      sprintf(tmp, "SELECT EXISTS (%s) AS foo", manager.to_sql());
-      assert_equal(tmp, m2.to_sql());
+      sprintf(tmp, "SELECT EXISTS (%s) AS foo", manager.to_sql().c_str());
+      assert_equal(tmp, m2.to_sql().c_str());
     })
   })
 
@@ -186,7 +186,7 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project("*");
       m2.where(table["age"].gt(99));
       nodes::Union node = m1.union_with(m2);
-      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" < 18 UNION SELECT * FROM \"users\" WHERE \"users\".\"age\" > 99)", node.to_sql());
+      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" < 18 UNION SELECT * FROM \"users\" WHERE \"users\".\"age\" > 99)", node.to_sql().c_str());
     })
 
     IT("should union all", {
@@ -198,7 +198,7 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project("*");
       m2.where(table["age"].gt(99));
       nodes::UnionAll node = m1.union_all(m2);
-      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" < 18 UNION ALL SELECT * FROM \"users\" WHERE \"users\".\"age\" > 99)", node.to_sql());
+      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" < 18 UNION ALL SELECT * FROM \"users\" WHERE \"users\".\"age\" > 99)", node.to_sql().c_str());
     })
   })
 
@@ -212,7 +212,7 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project("*");
       m2.where(table["age"].lt(99));
       nodes::Intersect node = m1.intersect(m2);
-      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" > 18 INTERSECT SELECT * FROM \"users\" WHERE \"users\".\"age\" < 99)", node.to_sql());
+      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" > 18 INTERSECT SELECT * FROM \"users\" WHERE \"users\".\"age\" < 99)", node.to_sql().c_str());
     })
   })
 
@@ -226,7 +226,7 @@ TEST_SUITE(select_manager, "select manager", {
       m2.project("*");
       m2.where(table["age"].between(40, 99));
       nodes::Except node = m1.except(m2);
-      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" BETWEEN 18 AND 60 EXCEPT SELECT * FROM \"users\" WHERE \"users\".\"age\" BETWEEN 40 AND 99)", node.to_sql());
+      assert_equal("(SELECT * FROM \"users\" WHERE \"users\".\"age\" BETWEEN 18 AND 60 EXCEPT SELECT * FROM \"users\" WHERE \"users\".\"age\" BETWEEN 40 AND 99)", node.to_sql().c_str());
     })
   })
 

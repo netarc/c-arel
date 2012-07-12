@@ -30,7 +30,7 @@ namespace c_arel {
     return result;
   }
 
-  const char * format_string(const std::string &fmt, ...) {
+  std::string format_string(const std::string &fmt, ...) {
     int size=100;
     std::string str;
     va_list ap;

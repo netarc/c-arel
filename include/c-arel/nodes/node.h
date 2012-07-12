@@ -13,14 +13,14 @@ namespace c_arel {
     class Not;
     class Grouping;
     class And;
-    
+
     class Node : virtual  public Derived {
     public:
       nodes::Not Not(void);
       nodes::Grouping Or(variant right);
       nodes::And And(variant right);
-      
-      const char * to_sql(void);
+
+      std::string to_sql(void);
 
       // inheritance/rtii support
       virtual variant self(void) { return *this; }

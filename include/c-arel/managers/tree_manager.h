@@ -15,7 +15,7 @@ namespace c_arel {
     ~TreeManager();
 
     Visitor *visitor(void);
-    const char * to_sql(void);
+    std::string to_sql(void);
 
     virtual TreeManager & where(variant expression);
 

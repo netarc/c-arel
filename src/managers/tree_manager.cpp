@@ -22,8 +22,8 @@ namespace c_arel {
     return new ToSql(connection);
   }
 
-  const char * TreeManager::to_sql(void) {
-    return ToSql(connection).accept(this->ast).c_str();
+  std::string TreeManager::to_sql(void) {
+    return ToSql(connection).accept(this->ast);
   }
 
   TreeManager & TreeManager::where(variant expr) {
