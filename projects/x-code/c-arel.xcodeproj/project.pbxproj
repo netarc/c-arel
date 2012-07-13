@@ -97,6 +97,98 @@
 		CB903AC314F1C96C004226EF /* visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9514F1C96C004226EF /* visitor.h */; };
 		CB903AC414F1C96C004226EF /* c-arel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9614F1C96C004226EF /* c-arel.h */; };
 		CB903AC814F1C983004226EF /* variant.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CB903AC714F1C983004226EF /* variant.hpp */; };
+		CBAF2CC815B0BE4500D376AE /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF3107E1533A09C00FE429B /* connection.cpp */; };
+		CBAF2CC915B0BE4500D376AE /* alias_predication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A0B14F1C95C004226EF /* alias_predication.cpp */; };
+		CBAF2CCA15B0BE4500D376AE /* attribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A0C14F1C95C004226EF /* attribute.cpp */; };
+		CBAF2CCB15B0BE4500D376AE /* base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A0D14F1C95C004226EF /* base.cpp */; };
+		CBAF2CCC15B0BE4500D376AE /* expressions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A0E14F1C95C004226EF /* expressions.cpp */; };
+		CBAF2CCD15B0BE4500D376AE /* delete_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1014F1C95C004226EF /* delete_manager.cpp */; };
+		CBAF2CCE15B0BE4500D376AE /* insert_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1114F1C95C004226EF /* insert_manager.cpp */; };
+		CBAF2CCF15B0BE4500D376AE /* select_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1214F1C95C004226EF /* select_manager.cpp */; };
+		CBAF2CD015B0BE4500D376AE /* tree_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1314F1C95C004226EF /* tree_manager.cpp */; };
+		CBAF2CD115B0BE4500D376AE /* update_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1414F1C95C004226EF /* update_manager.cpp */; };
+		CBAF2CD215B0BE4500D376AE /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1514F1C95C004226EF /* math.cpp */; };
+		CBAF2CD315B0BE4500D376AE /* and.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1714F1C95C004226EF /* and.cpp */; };
+		CBAF2CD415B0BE4500D376AE /* ascending.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1814F1C95C004226EF /* ascending.cpp */; };
+		CBAF2CD515B0BE4500D376AE /* binary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1914F1C95C004226EF /* binary.cpp */; };
+		CBAF2CD615B0BE4500D376AE /* count.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1A14F1C95C004226EF /* count.cpp */; };
+		CBAF2CD715B0BE4500D376AE /* delete_statement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1B14F1C95C004226EF /* delete_statement.cpp */; };
+		CBAF2CD815B0BE4500D376AE /* descending.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1C14F1C95C004226EF /* descending.cpp */; };
+		CBAF2CD915B0BE4500D376AE /* distinct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1D14F1C95C004226EF /* distinct.cpp */; };
+		CBAF2CDA15B0BE4500D376AE /* equality.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1E14F1C95C004226EF /* equality.cpp */; };
+		CBAF2CDB15B0BE4500D376AE /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A1F14F1C95C004226EF /* function.cpp */; };
+		CBAF2CDC15B0BE4500D376AE /* in.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2014F1C95C004226EF /* in.cpp */; };
+		CBAF2CDD15B0BE4500D376AE /* infix_operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2114F1C95C004226EF /* infix_operation.cpp */; };
+		CBAF2CDE15B0BE4500D376AE /* inner_join.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2214F1C95C004226EF /* inner_join.cpp */; };
+		CBAF2CDF15B0BE4500D376AE /* insert_statement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2314F1C95C004226EF /* insert_statement.cpp */; };
+		CBAF2CE015B0BE4500D376AE /* join_source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2414F1C95C004226EF /* join_source.cpp */; };
+		CBAF2CE115B0BE4500D376AE /* named_function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2514F1C95C004226EF /* named_function.cpp */; };
+		CBAF2CE215B0BE4500D376AE /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2614F1C95C004226EF /* node.cpp */; };
+		CBAF2CE315B0BE4500D376AE /* outer_join.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2714F1C95C004226EF /* outer_join.cpp */; };
+		CBAF2CE415B0BE4500D376AE /* select_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2814F1C95C004226EF /* select_core.cpp */; };
+		CBAF2CE515B0BE4500D376AE /* select_statement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2914F1C95C004226EF /* select_statement.cpp */; };
+		CBAF2CE615B0BE4500D376AE /* sql_literal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2A14F1C95C004226EF /* sql_literal.cpp */; };
+		CBAF2CE715B0BE4500D376AE /* string_join.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2B14F1C95C004226EF /* string_join.cpp */; };
+		CBAF2CE815B0BE4500D376AE /* table_alias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2C14F1C95C004226EF /* table_alias.cpp */; };
+		CBAF2CE915B0BE4500D376AE /* unary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2D14F1C95C004226EF /* unary.cpp */; };
+		CBAF2CEA15B0BE4500D376AE /* unqualified_column.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2E14F1C95C004226EF /* unqualified_column.cpp */; };
+		CBAF2CEB15B0BE4500D376AE /* update_statement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A2F14F1C95C004226EF /* update_statement.cpp */; };
+		CBAF2CEC15B0BE4500D376AE /* values.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3014F1C95C004226EF /* values.cpp */; };
+		CBAF2CED15B0BE4500D376AE /* with.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3114F1C95C004226EF /* with.cpp */; };
+		CBAF2CEE15B0BE4500D376AE /* order_predications.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3214F1C95C004226EF /* order_predications.cpp */; };
+		CBAF2CEF15B0BE4500D376AE /* predications.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3314F1C95C004226EF /* predications.cpp */; };
+		CBAF2CF015B0BE4500D376AE /* table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3414F1C95C004226EF /* table.cpp */; };
+		CBAF2CF115B0BE4500D376AE /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3514F1C95C004226EF /* util.cpp */; };
+		CBAF2CF215B0BE4500D376AE /* to_sql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3714F1C95C004226EF /* to_sql.cpp */; };
+		CBAF2CF315B0BE4500D376AE /* visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB903A3814F1C95C004226EF /* visitor.cpp */; };
+		CBAF2CF415B0BE4C00D376AE /* variant.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CB903AC714F1C983004226EF /* variant.hpp */; };
+		CBAF2CF515B0BE4C00D376AE /* connection.h in Headers */ = {isa = PBXBuildFile; fileRef = CBF3107B1533A09200FE429B /* connection.h */; };
+		CBAF2CF615B0BE4C00D376AE /* alias_predication.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6614F1C96C004226EF /* alias_predication.h */; };
+		CBAF2CF715B0BE4C00D376AE /* attribute.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6714F1C96C004226EF /* attribute.h */; };
+		CBAF2CF815B0BE4C00D376AE /* base.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6814F1C96C004226EF /* base.h */; };
+		CBAF2CF915B0BE4C00D376AE /* derived.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6914F1C96C004226EF /* derived.h */; };
+		CBAF2CFA15B0BE4C00D376AE /* expessions.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6A14F1C96C004226EF /* expessions.h */; };
+		CBAF2CFB15B0BE4C00D376AE /* delete_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6C14F1C96C004226EF /* delete_manager.h */; };
+		CBAF2CFC15B0BE4C00D376AE /* insert_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6D14F1C96C004226EF /* insert_manager.h */; };
+		CBAF2CFD15B0BE4C00D376AE /* select_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6E14F1C96C004226EF /* select_manager.h */; };
+		CBAF2CFE15B0BE4C00D376AE /* tree_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A6F14F1C96C004226EF /* tree_manager.h */; };
+		CBAF2CFF15B0BE4C00D376AE /* update_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7014F1C96C004226EF /* update_manager.h */; };
+		CBAF2D0015B0BE4C00D376AE /* math.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7114F1C96C004226EF /* math.h */; };
+		CBAF2D0115B0BE4C00D376AE /* and.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7314F1C96C004226EF /* and.h */; };
+		CBAF2D0215B0BE4C00D376AE /* ascending.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7414F1C96C004226EF /* ascending.h */; };
+		CBAF2D0315B0BE4C00D376AE /* binary.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7514F1C96C004226EF /* binary.h */; };
+		CBAF2D0415B0BE4C00D376AE /* count.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7614F1C96C004226EF /* count.h */; };
+		CBAF2D0515B0BE4C00D376AE /* delete_statement.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7714F1C96C004226EF /* delete_statement.h */; };
+		CBAF2D0615B0BE4C00D376AE /* descending.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7814F1C96C004226EF /* descending.h */; };
+		CBAF2D0715B0BE4C00D376AE /* distinct.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7914F1C96C004226EF /* distinct.h */; };
+		CBAF2D0815B0BE4C00D376AE /* equality.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7A14F1C96C004226EF /* equality.h */; };
+		CBAF2D0915B0BE4C00D376AE /* function.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7B14F1C96C004226EF /* function.h */; };
+		CBAF2D0A15B0BE4C00D376AE /* in.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7C14F1C96C004226EF /* in.h */; };
+		CBAF2D0B15B0BE4C00D376AE /* infix_operation.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7D14F1C96C004226EF /* infix_operation.h */; };
+		CBAF2D0C15B0BE4C00D376AE /* inner_join.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7E14F1C96C004226EF /* inner_join.h */; };
+		CBAF2D0D15B0BE4C00D376AE /* insert_statement.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A7F14F1C96C004226EF /* insert_statement.h */; };
+		CBAF2D0E15B0BE4C00D376AE /* join_source.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8014F1C96C004226EF /* join_source.h */; };
+		CBAF2D0F15B0BE4C00D376AE /* named_function.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8114F1C96C004226EF /* named_function.h */; };
+		CBAF2D1015B0BE4C00D376AE /* node.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8214F1C96C004226EF /* node.h */; };
+		CBAF2D1115B0BE4C00D376AE /* outer_join.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8314F1C96C004226EF /* outer_join.h */; };
+		CBAF2D1215B0BE4C00D376AE /* select_core.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8414F1C96C004226EF /* select_core.h */; };
+		CBAF2D1315B0BE4C00D376AE /* select_statement.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8514F1C96C004226EF /* select_statement.h */; };
+		CBAF2D1415B0BE4C00D376AE /* sql_literal.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8614F1C96C004226EF /* sql_literal.h */; };
+		CBAF2D1515B0BE4C00D376AE /* string_join.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8714F1C96C004226EF /* string_join.h */; };
+		CBAF2D1615B0BE4C00D376AE /* table_alias.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8814F1C96C004226EF /* table_alias.h */; };
+		CBAF2D1715B0BE4C00D376AE /* unary.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8914F1C96C004226EF /* unary.h */; };
+		CBAF2D1815B0BE4C00D376AE /* unqualified_column.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8A14F1C96C004226EF /* unqualified_column.h */; };
+		CBAF2D1915B0BE4C00D376AE /* update_statement.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8B14F1C96C004226EF /* update_statement.h */; };
+		CBAF2D1A15B0BE4C00D376AE /* values.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8C14F1C96C004226EF /* values.h */; };
+		CBAF2D1B15B0BE4C00D376AE /* with.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8D14F1C96C004226EF /* with.h */; };
+		CBAF2D1C15B0BE4C00D376AE /* order_predications.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8E14F1C96C004226EF /* order_predications.h */; };
+		CBAF2D1D15B0BE4C00D376AE /* predications.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A8F14F1C96C004226EF /* predications.h */; };
+		CBAF2D1E15B0BE4C00D376AE /* table.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9014F1C96C004226EF /* table.h */; };
+		CBAF2D1F15B0BE4C00D376AE /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9114F1C96C004226EF /* util.h */; };
+		CBAF2D2015B0BE4C00D376AE /* version.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9214F1C96C004226EF /* version.h */; };
+		CBAF2D2115B0BE4C00D376AE /* to_sql.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9414F1C96C004226EF /* to_sql.h */; };
+		CBAF2D2215B0BE4C00D376AE /* visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9514F1C96C004226EF /* visitor.h */; };
+		CBAF2D2315B0BE4C00D376AE /* c-arel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB903A9614F1C96C004226EF /* c-arel.h */; };
 		CBF3107C1533A09200FE429B /* connection.h in Headers */ = {isa = PBXBuildFile; fileRef = CBF3107B1533A09200FE429B /* connection.h */; };
 		CBF3107F1533A09C00FE429B /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF3107E1533A09C00FE429B /* connection.cpp */; };
 /* End PBXBuildFile section */
@@ -193,12 +285,20 @@
 		CB903A9514F1C96C004226EF /* visitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = visitor.h; sourceTree = "<group>"; };
 		CB903A9614F1C96C004226EF /* c-arel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "c-arel.h"; sourceTree = "<group>"; };
 		CB903AC714F1C983004226EF /* variant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = variant.hpp; sourceTree = "<group>"; };
+		CBAF2CC415B0BE3A00D376AE /* libc-arel-static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libc-arel-static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF3107B1533A09200FE429B /* connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = connection.h; sourceTree = "<group>"; };
 		CBF3107E1533A09C00FE429B /* connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = connection.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CB9039FD14F1C910004226EF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBAF2CC115B0BE3A00D376AE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -222,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				CB903A0014F1C910004226EF /* libc-arel.dylib */,
+				CBAF2CC415B0BE3A00D376AE /* libc-arel-static.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -464,12 +565,67 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CBAF2CC215B0BE3A00D376AE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBAF2CF415B0BE4C00D376AE /* variant.hpp in Headers */,
+				CBAF2CF515B0BE4C00D376AE /* connection.h in Headers */,
+				CBAF2CF615B0BE4C00D376AE /* alias_predication.h in Headers */,
+				CBAF2CF715B0BE4C00D376AE /* attribute.h in Headers */,
+				CBAF2CF815B0BE4C00D376AE /* base.h in Headers */,
+				CBAF2CF915B0BE4C00D376AE /* derived.h in Headers */,
+				CBAF2CFA15B0BE4C00D376AE /* expessions.h in Headers */,
+				CBAF2CFB15B0BE4C00D376AE /* delete_manager.h in Headers */,
+				CBAF2CFC15B0BE4C00D376AE /* insert_manager.h in Headers */,
+				CBAF2CFD15B0BE4C00D376AE /* select_manager.h in Headers */,
+				CBAF2CFE15B0BE4C00D376AE /* tree_manager.h in Headers */,
+				CBAF2CFF15B0BE4C00D376AE /* update_manager.h in Headers */,
+				CBAF2D0015B0BE4C00D376AE /* math.h in Headers */,
+				CBAF2D0115B0BE4C00D376AE /* and.h in Headers */,
+				CBAF2D0215B0BE4C00D376AE /* ascending.h in Headers */,
+				CBAF2D0315B0BE4C00D376AE /* binary.h in Headers */,
+				CBAF2D0415B0BE4C00D376AE /* count.h in Headers */,
+				CBAF2D0515B0BE4C00D376AE /* delete_statement.h in Headers */,
+				CBAF2D0615B0BE4C00D376AE /* descending.h in Headers */,
+				CBAF2D0715B0BE4C00D376AE /* distinct.h in Headers */,
+				CBAF2D0815B0BE4C00D376AE /* equality.h in Headers */,
+				CBAF2D0915B0BE4C00D376AE /* function.h in Headers */,
+				CBAF2D0A15B0BE4C00D376AE /* in.h in Headers */,
+				CBAF2D0B15B0BE4C00D376AE /* infix_operation.h in Headers */,
+				CBAF2D0C15B0BE4C00D376AE /* inner_join.h in Headers */,
+				CBAF2D0D15B0BE4C00D376AE /* insert_statement.h in Headers */,
+				CBAF2D0E15B0BE4C00D376AE /* join_source.h in Headers */,
+				CBAF2D0F15B0BE4C00D376AE /* named_function.h in Headers */,
+				CBAF2D1015B0BE4C00D376AE /* node.h in Headers */,
+				CBAF2D1115B0BE4C00D376AE /* outer_join.h in Headers */,
+				CBAF2D1215B0BE4C00D376AE /* select_core.h in Headers */,
+				CBAF2D1315B0BE4C00D376AE /* select_statement.h in Headers */,
+				CBAF2D1415B0BE4C00D376AE /* sql_literal.h in Headers */,
+				CBAF2D1515B0BE4C00D376AE /* string_join.h in Headers */,
+				CBAF2D1615B0BE4C00D376AE /* table_alias.h in Headers */,
+				CBAF2D1715B0BE4C00D376AE /* unary.h in Headers */,
+				CBAF2D1815B0BE4C00D376AE /* unqualified_column.h in Headers */,
+				CBAF2D1915B0BE4C00D376AE /* update_statement.h in Headers */,
+				CBAF2D1A15B0BE4C00D376AE /* values.h in Headers */,
+				CBAF2D1B15B0BE4C00D376AE /* with.h in Headers */,
+				CBAF2D1C15B0BE4C00D376AE /* order_predications.h in Headers */,
+				CBAF2D1D15B0BE4C00D376AE /* predications.h in Headers */,
+				CBAF2D1E15B0BE4C00D376AE /* table.h in Headers */,
+				CBAF2D1F15B0BE4C00D376AE /* util.h in Headers */,
+				CBAF2D2015B0BE4C00D376AE /* version.h in Headers */,
+				CBAF2D2115B0BE4C00D376AE /* to_sql.h in Headers */,
+				CBAF2D2215B0BE4C00D376AE /* visitor.h in Headers */,
+				CBAF2D2315B0BE4C00D376AE /* c-arel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		CB9039FF14F1C910004226EF /* c-arel */ = {
+		CB9039FF14F1C910004226EF /* c-arel-dynamic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB903A0414F1C910004226EF /* Build configuration list for PBXNativeTarget "c-arel" */;
+			buildConfigurationList = CB903A0414F1C910004226EF /* Build configuration list for PBXNativeTarget "c-arel-dynamic" */;
 			buildPhases = (
 				CB9039FC14F1C910004226EF /* Sources */,
 				CB9039FD14F1C910004226EF /* Frameworks */,
@@ -479,10 +635,27 @@
 			);
 			dependencies = (
 			);
-			name = "c-arel";
+			name = "c-arel-dynamic";
 			productName = "c-arel";
 			productReference = CB903A0014F1C910004226EF /* libc-arel.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		CBAF2CC315B0BE3A00D376AE /* c-arel-static */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBAF2CC515B0BE3A00D376AE /* Build configuration list for PBXNativeTarget "c-arel-static" */;
+			buildPhases = (
+				CBAF2CC015B0BE3A00D376AE /* Sources */,
+				CBAF2CC115B0BE3A00D376AE /* Frameworks */,
+				CBAF2CC215B0BE3A00D376AE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "c-arel-static";
+			productName = "c-arel-static";
+			productReference = CBAF2CC415B0BE3A00D376AE /* libc-arel-static.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -505,7 +678,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CB9039FF14F1C910004226EF /* c-arel */,
+				CB9039FF14F1C910004226EF /* c-arel-dynamic */,
+				CBAF2CC315B0BE3A00D376AE /* c-arel-static */,
 			);
 		};
 /* End PBXProject section */
@@ -559,6 +733,57 @@
 				CB903A6214F1C95C004226EF /* to_sql.cpp in Sources */,
 				CB903A6314F1C95C004226EF /* visitor.cpp in Sources */,
 				CBF3107F1533A09C00FE429B /* connection.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBAF2CC015B0BE3A00D376AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBAF2CC815B0BE4500D376AE /* connection.cpp in Sources */,
+				CBAF2CC915B0BE4500D376AE /* alias_predication.cpp in Sources */,
+				CBAF2CCA15B0BE4500D376AE /* attribute.cpp in Sources */,
+				CBAF2CCB15B0BE4500D376AE /* base.cpp in Sources */,
+				CBAF2CCC15B0BE4500D376AE /* expressions.cpp in Sources */,
+				CBAF2CCD15B0BE4500D376AE /* delete_manager.cpp in Sources */,
+				CBAF2CCE15B0BE4500D376AE /* insert_manager.cpp in Sources */,
+				CBAF2CCF15B0BE4500D376AE /* select_manager.cpp in Sources */,
+				CBAF2CD015B0BE4500D376AE /* tree_manager.cpp in Sources */,
+				CBAF2CD115B0BE4500D376AE /* update_manager.cpp in Sources */,
+				CBAF2CD215B0BE4500D376AE /* math.cpp in Sources */,
+				CBAF2CD315B0BE4500D376AE /* and.cpp in Sources */,
+				CBAF2CD415B0BE4500D376AE /* ascending.cpp in Sources */,
+				CBAF2CD515B0BE4500D376AE /* binary.cpp in Sources */,
+				CBAF2CD615B0BE4500D376AE /* count.cpp in Sources */,
+				CBAF2CD715B0BE4500D376AE /* delete_statement.cpp in Sources */,
+				CBAF2CD815B0BE4500D376AE /* descending.cpp in Sources */,
+				CBAF2CD915B0BE4500D376AE /* distinct.cpp in Sources */,
+				CBAF2CDA15B0BE4500D376AE /* equality.cpp in Sources */,
+				CBAF2CDB15B0BE4500D376AE /* function.cpp in Sources */,
+				CBAF2CDC15B0BE4500D376AE /* in.cpp in Sources */,
+				CBAF2CDD15B0BE4500D376AE /* infix_operation.cpp in Sources */,
+				CBAF2CDE15B0BE4500D376AE /* inner_join.cpp in Sources */,
+				CBAF2CDF15B0BE4500D376AE /* insert_statement.cpp in Sources */,
+				CBAF2CE015B0BE4500D376AE /* join_source.cpp in Sources */,
+				CBAF2CE115B0BE4500D376AE /* named_function.cpp in Sources */,
+				CBAF2CE215B0BE4500D376AE /* node.cpp in Sources */,
+				CBAF2CE315B0BE4500D376AE /* outer_join.cpp in Sources */,
+				CBAF2CE415B0BE4500D376AE /* select_core.cpp in Sources */,
+				CBAF2CE515B0BE4500D376AE /* select_statement.cpp in Sources */,
+				CBAF2CE615B0BE4500D376AE /* sql_literal.cpp in Sources */,
+				CBAF2CE715B0BE4500D376AE /* string_join.cpp in Sources */,
+				CBAF2CE815B0BE4500D376AE /* table_alias.cpp in Sources */,
+				CBAF2CE915B0BE4500D376AE /* unary.cpp in Sources */,
+				CBAF2CEA15B0BE4500D376AE /* unqualified_column.cpp in Sources */,
+				CBAF2CEB15B0BE4500D376AE /* update_statement.cpp in Sources */,
+				CBAF2CEC15B0BE4500D376AE /* values.cpp in Sources */,
+				CBAF2CED15B0BE4500D376AE /* with.cpp in Sources */,
+				CBAF2CEE15B0BE4500D376AE /* order_predications.cpp in Sources */,
+				CBAF2CEF15B0BE4500D376AE /* predications.cpp in Sources */,
+				CBAF2CF015B0BE4500D376AE /* table.cpp in Sources */,
+				CBAF2CF115B0BE4500D376AE /* util.cpp in Sources */,
+				CBAF2CF215B0BE4500D376AE /* to_sql.cpp in Sources */,
+				CBAF2CF315B0BE4500D376AE /* visitor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +851,22 @@
 			};
 			name = Release;
 		};
+		CBAF2CC615B0BE3A00D376AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CBAF2CC715B0BE3A00D376AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -638,7 +879,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CB903A0414F1C910004226EF /* Build configuration list for PBXNativeTarget "c-arel" */ = {
+		CB903A0414F1C910004226EF /* Build configuration list for PBXNativeTarget "c-arel-dynamic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB903A0514F1C910004226EF /* Debug */,
@@ -646,6 +887,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CBAF2CC515B0BE3A00D376AE /* Build configuration list for PBXNativeTarget "c-arel-static" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBAF2CC615B0BE3A00D376AE /* Debug */,
+				CBAF2CC715B0BE3A00D376AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
