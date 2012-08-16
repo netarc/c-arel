@@ -7,6 +7,8 @@
 
 #include "c-arel.h"
 
+#include <algorithm>
+
 namespace c_arel {
 
   class ClassMap {

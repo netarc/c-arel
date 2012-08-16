@@ -7,6 +7,7 @@
 
 #include "c-arel.h"
 #include <sstream>
+#include <stdarg.h>
 
 namespace c_arel {
   std::vector<variant> zip_vector(std::vector<variant> src, std::vector<variant> target) {
