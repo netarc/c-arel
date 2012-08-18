@@ -70,7 +70,7 @@ namespace c_arel {
   }
 
   Attribute Table::operator[] (const char *name) {
-    return Attribute(this, name);
+    return Attribute(*this, name);
   }
 
   // -- non AREL helper methods --
